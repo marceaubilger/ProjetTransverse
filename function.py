@@ -2,6 +2,7 @@ import math
 import matplotlib.pyplot as plt 
 import numpy as np
 
+
 def compute_time_parameters(strength, angle, precision=0.01):
     # Convert angle from degrees to radians
     angle_rad = np.deg2rad(angle)
@@ -30,12 +31,10 @@ def trajectory(angle, initial_speed, total_time, time_interval):
     speed_y = initial_speed * np.sin(angle_radians)
     g = 9.81 #gravity
 
-    compute_time_parameters(initial_speed, angle)
-
-    #number of intervalles of time
+    #number of intervals of time
     number_of_points = int(total_time / time_interval)
 
-    #initialisation of lists to store the x and y coordinates of the trajectory
+    #initialization of lists to store the x and y coordinates of the trajectory
     pos_x = [0.0]
     pos_y = [0.0]
 
@@ -50,7 +49,7 @@ def trajectory(angle, initial_speed, total_time, time_interval):
         pos_x.append(position_x)
         pos_y.append(position_y)
 
-        if pos_y < 0:
+        if pos_y[-1] < 0:  # Check if the last element of pos_y is less than 0
             break
 
     return pos_x, pos_y

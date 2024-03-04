@@ -29,7 +29,7 @@ screen_info = pygame.display.Info()
 WIDTH, HEIGHT = screen_info.current_w, screen_info.current_h #utilise une fonction prédéfinie pour obtenir la taille de l'écran et mettre le jeu en full screen
 
 sky_surface=pygame.image.load(chemin_sky)
-resized_sky = pygame.transform.scale(sky_surface, (WIDTH, HEIGHT-100)) #load le png du fond et le resize 
+resized_sky = pygame.transform.scale(sky_surface, (WIDTH, HEIGHT-100)) #load le png du fond et le resize
 resized_sky_rect=resized_sky.get_rect(topleft=(0,0))
 
 sentier=pygame.image.load(chemin_sentier)
@@ -64,12 +64,29 @@ screen=pygame.display.set_mode((WIDTH,HEIGHT),pygame.FULLSCREEN)
 clock=pygame.time.Clock()
 
 
+ValeurDefilementGlobale=5
 run=True
 angle = 0
-rotation_speed = 10
+rotation_speed = 4
 
+scrollsky=0
+scrollground=0
+slides=math.ceil(screen_info.current_w / WIDTH) + 1
 while run==True:
     clock.tick(60)
+
+    for i in range(0,slides+1):
+        screen.blit(resized_sky,(i * screen_info.current_w+scrollsky, 0))
+    scrollsky-=ValeurDefilementGlobale
+    if abs(scrollsky)>screen_info.current_w:
+        scrollsky=0
+
+    for i in range(0,slides+1):
+        screen.blit(resized_ground,(i * screen_info.current_w+scrollground, HEIGHT-100))
+    scrollground-=ValeurDefilementGlobale*1.2
+    if abs(scrollground)>screen_info.current_w:
+        scrollground=0
+
     keys=pygame.key.get_pressed()
     for event in pygame.event.get(): #check si la touche échap est pressée et quitte le jeu si c'est le cas
         if event.type==pygame.QUIT :
@@ -78,6 +95,10 @@ while run==True:
             if event.key == pygame.K_ESCAPE:
                 run = False 
 
+
+
+    if keys[pygame.K_UP]:# fait une sorte de gravité, pas neccessaire en fonction de la future fonction trajectoire
+        player_rect.y-=15
 
     if keys[pygame.K_SPACE] and jauge_activated==True: # calcule la valeur de la jauge lorsque la touche aspace est pressée
         strenght_value=5-4*(bar_rect.y-jauge_rect.top)/(jauge_rect.bottom-jauge_rect.top)
@@ -89,9 +110,7 @@ while run==True:
         arrow_activated=False
 
 
-    screen.blit(resized_sky,resized_sky_rect)
     screen.blit(mountain,mountain_rect)
-    screen.blit(resized_ground,resized_ground_rect)
     screen.blit(player,player_rect)
     screen.blit(sentier,sentier_rect)#update le display du joueur et du background
 

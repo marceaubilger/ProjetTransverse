@@ -2,6 +2,7 @@ import pygame
 import sys
 from pygame import QUIT
 import os
+import function 
 
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","") 

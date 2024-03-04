@@ -1,5 +1,4 @@
 import math
-import matplotlib.pyplot as plt 
 import numpy as np
 
 
@@ -43,7 +42,7 @@ def trajectory(angle, initial_speed, total_time, time_interval):
         #computation of the new position
         time = i * time_interval
         position_x = speed_x * time
-        position_y = speed_y * time - 0.5 * g * time ** 2
+        position_y = ((speed_y * time) - 0.5 *( g * time ** 2))
 
         #adding the position to the list
         pos_x.append(position_x)
@@ -53,3 +52,10 @@ def trajectory(angle, initial_speed, total_time, time_interval):
             break
 
     return pos_x, pos_y
+
+# strenght=5
+# angle=10
+# total_time, time_interval=compute_time_parameters(strenght, angle, precision=0.01)
+# pos_x, pos_y=trajectory(angle, strenght, total_time, time_interval)
+# for i in pos_y:
+#     print(i*1000)

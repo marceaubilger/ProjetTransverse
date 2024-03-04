@@ -3,6 +3,7 @@ import sys
 from pygame import QUIT
 import os
 import math
+from functions import *
 
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
@@ -26,8 +27,7 @@ pygame.font.init()
 font_test = pygame.font.Font(None, 36)  
 
 pygame.init()
-screen_info = pygame.display.Info()
-WIDTH, HEIGHT = screen_info.current_w, screen_info.current_h #utilise une fonction prédéfinie pour obtenir la taille de l'écran et mettre le jeu en full screen
+WIDTH, HEIGHT = 1200,650
 
 sky_surface=pygame.image.load(chemin_sky)
 resized_sky = pygame.transform.scale(sky_surface, (WIDTH, HEIGHT-100)) #load le png du fond et le resize
@@ -35,11 +35,11 @@ resized_sky_rect=resized_sky.get_rect(topleft=(0,0))
 
 sentier=pygame.image.load(chemin_sentier)
 resized_sentier = pygame.transform.scale(sentier, (WIDTH,300))
-sentier_rect=sentier.get_rect(topleft=(0,420))
+sentier_rect=sentier.get_rect(topleft=(0,350))
 
 mountain=pygame.image.load(chemin_mountain)
 resized_mountain = pygame.transform.scale(mountain, (WIDTH,300))
-mountain_rect=mountain.get_rect(topleft=(0,370))
+mountain_rect=mountain.get_rect(topleft=(0,300))
 
 ground=pygame.image.load(chemin_sol)
 resized_ground = pygame.transform.scale(ground, (WIDTH,300))
@@ -52,7 +52,7 @@ arrow_activated=True
 
 
 player=pygame.image.load(chemin_player)
-player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+265))
+player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+280))
 
 jauge=pygame.image.load(chemin_jauge)
 jauge_rect=jauge.get_rect(bottomleft=(100,HEIGHT*2/3))
@@ -63,9 +63,11 @@ jauge_activated=True
 move_bar=15
 
 
-screen=pygame.display.set_mode((WIDTH,HEIGHT),pygame.FULLSCREEN)
+screen=pygame.display.set_mode((WIDTH,HEIGHT))
 clock=pygame.time.Clock()
 
+is_in_trajectory=False
+compute_trajectory=True
 
 ValeurDefilementGlobale=5
 run=True
@@ -77,33 +79,44 @@ scrollmountain=0
 scrollground=0
 scrollsentier=0
 
-slides=math.ceil(screen_info.current_w / WIDTH) + 1
+value_x=0
+value_y=0
+
+slides=math.ceil(WIDTH / WIDTH) + 1
 while run==True:
     clock.tick(60)
 
-    for i in range(0,slides+1):
-        screen.blit(resized_sky,(i * screen_info.current_w+scrollsky, 0))
-    scrollsky-=ValeurDefilementGlobale
-    if abs(scrollsky)>screen_info.current_w:
-        scrollsky=0
+    if(is_in_trajectory):
 
-    for i in range(0,slides+1):
-        screen.blit(resized_mountain,(i * screen_info.current_w+scrollmountain, 12))
-    scrollmountain-=ValeurDefilementGlobale*1.2
-    if abs(scrollmountain)>screen_info.current_w:
-        scrollmountain=0
+        for i in range(0,slides+1):
+            screen.blit(resized_sky,(i * WIDTH+scrollsky, 0))
+        scrollsky-=ValeurDefilementGlobale
+        if abs(scrollsky)>WIDTH:
+            scrollsky=0
 
-    for i in range(0,slides+1):
-        screen.blit(resized_ground,(i * screen_info.current_w+scrollground, HEIGHT-280))
-    scrollground-=ValeurDefilementGlobale*1.2
-    if abs(scrollground)>screen_info.current_w:
-        scrollground=0
+        for i in range(0,slides+1):
+            screen.blit(resized_mountain,(i * WIDTH+scrollmountain, 300))
+        scrollmountain-=ValeurDefilementGlobale*1.2
+        if abs(scrollmountain)>WIDTH:
+            scrollmountain=0
 
-    for i in range(0,slides+1):
-        screen.blit(resized_sentier,(i * screen_info.current_w+scrollsentier, HEIGHT-280))
-    scrollsentier-=ValeurDefilementGlobale*2
-    if abs(scrollsentier)>screen_info.current_w:
-        scrollsentier=0
+        for i in range(0,slides+1):
+            screen.blit(resized_ground,(i * WIDTH+scrollground, HEIGHT-300))
+        scrollground-=ValeurDefilementGlobale*1.2
+        if abs(scrollground)>WIDTH:
+            scrollground=0
+
+        for i in range(0,slides+1):
+            screen.blit(resized_sentier,(i * WIDTH+scrollsentier, HEIGHT-300))
+        scrollsentier-=ValeurDefilementGlobale*2
+        if abs(scrollsentier)>WIDTH:
+            scrollsentier=0
+    else:
+        screen.blit(resized_sky,resized_sky_rect)
+        screen.blit(mountain,mountain_rect)
+        screen.blit(resized_ground,resized_ground_rect)
+        screen.blit(resized_sentier,sentier_rect)
+        screen.blit(player,player_rect)
 
 
     keys=pygame.key.get_pressed()
@@ -151,7 +164,23 @@ while run==True:
     if arrow_activated is False: #affiche l'angle sur l'écran
         text2 = font_test.render(f"Angle : {angle}", True, (255, 0, 0))
         screen.blit(text2, (200, 10))
+    
+    if arrow_activated is False and jauge_activated is False:
+        is_in_trajectory=True
+        if compute_trajectory:
+            compute_trajectory=False
+            total_time, time_interval=compute_time_parameters(strenght_value, angle, precision=0.01)
+            pos_x, pos_y=trajectory(angle, strenght_value, total_time, time_interval)
 
+        if value_x>=len(pos_x):
+            is_in_trajectory=False
+
+    if compute_trajectory is False and value_x<len(pos_x):
+        tmp_value_x,tmp_value_y=player_rect.bottomleft
+        player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*500
+        print(player_rect.bottomleft)
+        value_x+=1
+        value_y+=1
     pygame.display.update()#update le display géneral
 
 

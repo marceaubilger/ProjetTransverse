@@ -34,9 +34,11 @@ resized_sky = pygame.transform.scale(sky_surface, (WIDTH, HEIGHT-100)) #load le 
 resized_sky_rect=resized_sky.get_rect(topleft=(0,0))
 
 sentier=pygame.image.load(chemin_sentier)
+resized_sentier = pygame.transform.scale(sentier, (WIDTH,300))
 sentier_rect=sentier.get_rect(topleft=(0,420))
 
 mountain=pygame.image.load(chemin_mountain)
+resized_mountain = pygame.transform.scale(mountain, (WIDTH,300))
 mountain_rect=mountain.get_rect(topleft=(0,370))
 
 ground=pygame.image.load(chemin_sol)
@@ -71,7 +73,10 @@ angle = 0
 rotation_speed = 4
 
 scrollsky=0
+scrollmountain=0
 scrollground=0
+scrollsentier=0
+
 slides=math.ceil(screen_info.current_w / WIDTH) + 1
 while run==True:
     clock.tick(60)
@@ -81,6 +86,24 @@ while run==True:
     scrollsky-=ValeurDefilementGlobale
     if abs(scrollsky)>screen_info.current_w:
         scrollsky=0
+
+    for i in range(0,slides+1):
+        screen.blit(resized_mountain,(i * screen_info.current_w+scrollmountain, 12))
+    scrollmountain-=ValeurDefilementGlobale*1.2
+    if abs(scrollmountain)>screen_info.current_w:
+        scrollmountain=0
+
+    for i in range(0,slides+1):
+        screen.blit(resized_ground,(i * screen_info.current_w+scrollground, HEIGHT-280))
+    scrollground-=ValeurDefilementGlobale*1.2
+    if abs(scrollground)>screen_info.current_w:
+        scrollground=0
+
+    for i in range(0,slides+1):
+        screen.blit(resized_sentier,(i * screen_info.current_w+scrollsentier, HEIGHT-280))
+    scrollsentier-=ValeurDefilementGlobale*2
+    if abs(scrollsentier)>screen_info.current_w:
+        scrollsentier=0
 
 
     keys=pygame.key.get_pressed()
@@ -105,14 +128,6 @@ while run==True:
         angle_value=angle
         arrow_activated=False
 
-
-    screen.blit(mountain,mountain_rect)
-    for i in range(0,slides+1):
-        screen.blit(resized_ground,(i * screen_info.current_w+scrollground, HEIGHT-280))
-    scrollground-=ValeurDefilementGlobale*1.2
-    if abs(scrollground)>screen_info.current_w:
-        scrollground=0
-    screen.blit(sentier,sentier_rect)#update le display du joueur et du background
     screen.blit(player,player_rect)
 
     if jauge_activated:

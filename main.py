@@ -5,7 +5,8 @@ import os
 import math
 
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
-script_path = os.path.abspath(sys.argv[0]).replace("main.py","") 
+script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
+
 nom_player="player_stand.png"
 chemin_player=os.path.join(script_path,nom_player)
 nom_sky="background.png"
@@ -81,11 +82,6 @@ while run==True:
     if abs(scrollsky)>screen_info.current_w:
         scrollsky=0
 
-    for i in range(0,slides+1):
-        screen.blit(resized_ground,(i * screen_info.current_w+scrollground, HEIGHT-100))
-    scrollground-=ValeurDefilementGlobale*1.2
-    if abs(scrollground)>screen_info.current_w:
-        scrollground=0
 
     keys=pygame.key.get_pressed()
     for event in pygame.event.get(): #check si la touche échap est pressée et quitte le jeu si c'est le cas
@@ -111,8 +107,13 @@ while run==True:
 
 
     screen.blit(mountain,mountain_rect)
-    screen.blit(player,player_rect)
+    for i in range(0,slides+1):
+        screen.blit(resized_ground,(i * screen_info.current_w+scrollground, HEIGHT-280))
+    scrollground-=ValeurDefilementGlobale*1.2
+    if abs(scrollground)>screen_info.current_w:
+        scrollground=0
     screen.blit(sentier,sentier_rect)#update le display du joueur et du background
+    screen.blit(player,player_rect)
 
     if jauge_activated:
         if(bar_rect.bottom==jauge_rect.bottom or bar_rect.top==jauge_rect.top):

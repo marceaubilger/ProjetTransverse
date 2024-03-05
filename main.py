@@ -133,7 +133,7 @@ while run==True:
         player_rect.y-=15
 
     if keys[pygame.K_SPACE] and jauge_activated==True: # calcule la valeur de la jauge lorsque la touche aspace est pressée
-        strenght_value=5-4*(bar_rect.y-jauge_rect.top)/(jauge_rect.bottom-jauge_rect.top)
+        strenght_value=5-4*(math.log10((bar_rect.y - jauge_rect.top) / (jauge_rect.bottom - jauge_rect.top)))
         strenght_value=round(strenght_value, 2)
         jauge_activated=False
         
@@ -169,6 +169,7 @@ while run==True:
         is_in_trajectory=True
         if compute_trajectory:
             compute_trajectory=False
+            if angle==0:angle+=1
             total_time, time_interval=compute_time_parameters(strenght_value, angle, precision=0.01)
             pos_x, pos_y=trajectory(angle, strenght_value, total_time, time_interval)
 
@@ -178,7 +179,6 @@ while run==True:
     if compute_trajectory is False and value_x<len(pos_x):
         tmp_value_x,tmp_value_y=player_rect.bottomleft
         player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*500
-        print(player_rect.bottomleft)
         value_x+=1
         value_y+=1
     pygame.display.update()#update le display géneral

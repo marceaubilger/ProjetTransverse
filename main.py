@@ -68,11 +68,14 @@ clock=pygame.time.Clock()
 
 is_in_trajectory=False
 compute_trajectory=True
+rebound=False
+tmp_rebound=False
 
-ValeurDefilementGlobale=5
+ValeurDefilementGlobale=7
 run=True
 angle = 0
 rotation_speed = 4
+number_of_rebound=1
 
 scrollsky=0
 scrollmountain=0
@@ -133,7 +136,7 @@ while run==True:
         player_rect.y-=15
 
     if keys[pygame.K_SPACE] and jauge_activated==True: # calcule la valeur de la jauge lorsque la touche aspace est pressée
-        strenght_value=5-4*(math.log10((bar_rect.y - jauge_rect.top) / (jauge_rect.bottom - jauge_rect.top)))
+        strenght_value=(HEIGHT-bar_rect.y)/20
         strenght_value=round(strenght_value, 2)
         jauge_activated=False
         
@@ -165,7 +168,7 @@ while run==True:
         text2 = font_test.render(f"Angle : {angle}", True, (255, 0, 0))
         screen.blit(text2, (200, 10))
     
-    if arrow_activated is False and jauge_activated is False:
+    if arrow_activated is False and jauge_activated is False and rebound is False:
         is_in_trajectory=True
         if compute_trajectory:
             compute_trajectory=False
@@ -173,14 +176,39 @@ while run==True:
             total_time, time_interval=compute_time_parameters(strenght_value, angle, precision=0.01)
             pos_x, pos_y=trajectory(angle, strenght_value, total_time, time_interval)
 
-        if value_x>=len(pos_x):
-            is_in_trajectory=False
-
-    if compute_trajectory is False and value_x<len(pos_x):
+    if compute_trajectory is False and value_x<len(pos_x) and rebound is False:
+        if compute_trajectory is False:
+            total_time, time_interval=compute_time_parameters(strenght_value/number_of_rebound, angle/number_of_rebound, precision=0.01)
+            pos_x, pos_y=trajectory(angle/number_of_rebound, strenght_value/number_of_rebound, total_time, time_interval)
+            compute_trajectory=True
         tmp_value_x,tmp_value_y=player_rect.bottomleft
-        player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*500
+        player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*300
         value_x+=1
         value_y+=1
+        if strenght_value/number_of_rebound<3 or angle/number_of_rebound<15:
+            rebound=True
+            is_in_trajectory=False
+        if value_x==len(pos_x):
+            value_x=0
+            value_y=0
+            compute_trajectory=False
+            number_of_rebound+=0.25
+
+    # if tmp_rebound:
+    #     value_x=0
+    #     value_y=0
+    #     rebound=True
+    #     tmp_rebound=False
+
+    # if rebound is True and value_x<len(pos_x):
+    #     total_time, time_interval=compute_time_parameters(strenght_value/1.5, angle/1.2, precision=0.01)
+    #     pos_x, pos_y=trajectory(angle/1.2, strenght_value/1.5, total_time, time_interval)  
+    #     tmp_value_x,tmp_value_y=player_rect.bottomleft
+    #     player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*300
+    #     value_x+=1
+    #     value_y+=1
+
+    
     pygame.display.update()#update le display géneral
 
 

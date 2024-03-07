@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-
+value_x=0
 def compute_time_parameters(strength, angle, precision=0.01):
     # Convert angle from degrees to radians
     angle_rad = np.deg2rad(angle)
@@ -52,10 +52,3 @@ def trajectory(angle, initial_speed, total_time, time_interval):
             break
 
     return pos_x, pos_y
-
-# strenght=5
-# angle=10
-# total_time, time_interval=compute_time_parameters(strenght, angle, precision=0.01)
-# pos_x, pos_y=trajectory(angle, strenght, total_time, time_interval)
-# for i in pos_y:
-#     print(i*1000)

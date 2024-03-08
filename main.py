@@ -4,6 +4,7 @@ from pygame import QUIT
 import os
 import math
 from functions import *
+import random
 
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
@@ -50,6 +51,8 @@ resized_arrow=pygame.transform.scale(arrow,(200,100))
 arrow_rect = resized_arrow.get_rect(bottomleft=(100, HEIGHT*2/3))
 arrow_activated=True
 
+Bird=pygame.image.load(os.path.join('obstacles','Bird','Walk1.png'))
+Bird=pygame.transform.scale(Bird,(100,100))
 
 player=pygame.image.load(chemin_player)
 player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+280))
@@ -82,15 +85,15 @@ scrollmountain=0
 scrollground=0
 scrollsentier=0
 
+BirdHere=False
+
 value_x=0
 value_y=0
 
 slides=math.ceil(WIDTH / WIDTH) + 1
 while run==True:
     clock.tick(60)
-
     if(is_in_trajectory):
-
         for i in range(0,slides+1):
             screen.blit(resized_sky,(i * WIDTH+scrollsky, 0))
         scrollsky-=ValeurDefilementGlobale
@@ -114,6 +117,22 @@ while run==True:
         scrollsentier-=ValeurDefilementGlobale*2
         if abs(scrollsentier)>WIDTH:
             scrollsentier=0
+
+        if BirdHere==True:
+            screen.blit(Bird,(Bird_x,Bird_y))
+            Bird_x-=ValeurDefilementGlobale*1.3
+            print((Bird_x,Bird_y))
+            if Bird_x<0:
+                BirdHere=False
+
+        if not ValeurDefilementGlobale==0:
+            player = pygame.transform.rotate(player, 90)
+
+            if random.randint(0,200)==100 and BirdHere==False:
+                BirdHere=True
+                Bird_x=2000
+                Bird_y=random.randint(0,100)
+
     else:
         screen.blit(resized_sky,resized_sky_rect)
         screen.blit(mountain,mountain_rect)
@@ -187,7 +206,7 @@ while run==True:
         value_y+=1
         if strenght_value/number_of_rebound<3 or angle/number_of_rebound<15:
             rebound=True
-            is_in_trajectory=False
+            ValeurDefilementGlobale=0
         if value_x==len(pos_x):
             value_x=0
             value_y=0

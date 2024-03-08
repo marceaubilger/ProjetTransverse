@@ -131,7 +131,7 @@ while run==True:
             if random.randint(0,200)==100 and BirdHere==False:
                 BirdHere=True
                 Bird_x=2000
-                Bird_y=random.randint(0,100)
+                Bird_y=random.randint(0,400)
 
     else:
         screen.blit(resized_sky,resized_sky_rect)

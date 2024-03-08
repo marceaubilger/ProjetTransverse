@@ -121,8 +121,8 @@ while run==True:
         if BirdHere==True:
             screen.blit(Bird,(Bird_x,Bird_y))
             Bird_x-=ValeurDefilementGlobale*1.3
-            print((Bird_x,Bird_y))
-            if Bird_x<0:
+            Bird_y+=random.randint(-2 ,2)
+            if Bird_x<-100:
                 BirdHere=False
 
         if not ValeurDefilementGlobale==0:
@@ -133,6 +133,8 @@ while run==True:
                 Bird_x=2000
                 Bird_y=random.randint(0,400)
 
+        if ValeurDefilementGlobale==0:
+            BirdHere=False
     else:
         screen.blit(resized_sky,resized_sky_rect)
         screen.blit(mountain,mountain_rect)

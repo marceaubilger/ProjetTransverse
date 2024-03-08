@@ -5,6 +5,7 @@ import os
 import math
 from functions import *
 import random
+import time
 
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
@@ -53,6 +54,7 @@ arrow_activated=True
 
 Bird=pygame.image.load(os.path.join('obstacles','Bird','Walk1.png'))
 Bird=pygame.transform.scale(Bird,(100,100))
+Bird_rect=Bird.get_rect()
 
 player=pygame.image.load(chemin_player)
 player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+280))
@@ -79,6 +81,8 @@ run=True
 angle = 0
 rotation_speed = 4
 number_of_rebound=1
+Score=0
+count_score=0
 
 scrollsky=0
 scrollmountain=0
@@ -86,6 +90,8 @@ scrollground=0
 scrollsentier=0
 
 BirdHere=False
+print_bird_hit=False
+Bird_collision=0
 
 value_x=0
 value_y=0
@@ -93,7 +99,19 @@ value_y=0
 slides=math.ceil(WIDTH / WIDTH) + 1
 while run==True:
     clock.tick(60)
-    if(is_in_trajectory):
+    if(run):
+        if is_in_trajectory is False:
+            ValeurDefilementGlobale=0
+        else: 
+            Score+=1
+            ValeurDefilementGlobale=7
+            if random.randint(0,200)==100 and BirdHere==False:
+                BirdHere=True
+                BirdI=0
+                Bird_rect.x=2000
+                Bird_rect.y=random.randint(0,400)
+
+
         for i in range(0,slides+1):
             screen.blit(resized_sky,(i * WIDTH+scrollsky, 0))
         scrollsky-=ValeurDefilementGlobale
@@ -120,9 +138,9 @@ while run==True:
 
         if BirdHere==True:
             BirdI+=1
-            screen.blit(Bird,(Bird_x,Bird_y))
-            Bird_x-=ValeurDefilementGlobale*1.3
-            Bird_y+=random.randint(-1 ,1)
+            screen.blit(Bird,Bird_rect)
+            Bird_rect.x-=ValeurDefilementGlobale*1.3
+            Bird_rect.y+=random.randint(-1 ,1)
             if 0<=BirdI<5:
                 Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk1.png')), (100, 100))
             elif 5<=BirdI<10:
@@ -131,32 +149,22 @@ while run==True:
                 Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk3.png')), (100, 100))
             elif 15<=BirdI<20:
                 Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk4.png')), (100, 100))
-            elif 20<=BirdI<25:
-                Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk5.png')), (100, 100))
-            elif 25<=BirdI<30:
-                Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk6.png')), (100, 100))
+            #elif 20<=BirdI<25:
+                #Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk5.png')), (100, 100))
+            #elif 25<=BirdI<30:
+                #Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk6.png')), (100, 100))
             else:
                 BirdI=0
-            print(BirdI)
-            if Bird_x<-100:
+            if Bird_rect.x<-100:
                 BirdHere=False
 
-        if not ValeurDefilementGlobale==0:
-
-            if random.randint(0,200)==100 and BirdHere==False:
-                BirdHere=True
-                BirdI=0
-                Bird_x=2000
-                Bird_y=random.randint(0,400)
+        if player_rect.colliderect(Bird_rect) and Bird_collision>50:
+            Score+=100
+            Bird_collision=0
+            count_score=100
 
         if ValeurDefilementGlobale==0:
             BirdHere=False
-    else:
-        screen.blit(resized_sky,resized_sky_rect)
-        screen.blit(mountain,mountain_rect)
-        screen.blit(resized_ground,resized_ground_rect)
-        screen.blit(resized_sentier,sentier_rect)
-        screen.blit(player,player_rect)
 
 
     keys=pygame.key.get_pressed()
@@ -203,7 +211,19 @@ while run==True:
         screen.blit(text1, (10, 10))
     if arrow_activated is False: #affiche l'angle sur l'écran
         text2 = font_test.render(f"Angle : {angle}", True, (255, 0, 0))
-        screen.blit(text2, (200, 10))
+        text3=font_test.render(f"Score : {Score}",True,(255,0,0))
+        text4=font_test.render("+100",True,(255,0,0))
+        if count_score>0:
+            print_bird_hit=True
+            count_score-=1
+        else:
+            print_bird_hit=False
+        if print_bird_hit:
+            screen.blit(text4,(500,10))
+            print("screen=true")
+        screen.blit(text2, (210, 10))
+        screen.blit(text3,(360,10))
+        
     
     if arrow_activated is False and jauge_activated is False and rebound is False:
         is_in_trajectory=True
@@ -225,27 +245,14 @@ while run==True:
         if strenght_value/number_of_rebound<3 or angle/number_of_rebound<15:
             rebound=True
             ValeurDefilementGlobale=0
+            is_in_trajectory=False
         if value_x==len(pos_x):
             value_x=0
             value_y=0
             compute_trajectory=False
             number_of_rebound+=0.25
 
-    # if tmp_rebound:
-    #     value_x=0
-    #     value_y=0
-    #     rebound=True
-    #     tmp_rebound=False
-
-    # if rebound is True and value_x<len(pos_x):
-    #     total_time, time_interval=compute_time_parameters(strenght_value/1.5, angle/1.2, precision=0.01)
-    #     pos_x, pos_y=trajectory(angle/1.2, strenght_value/1.5, total_time, time_interval)  
-    #     tmp_value_x,tmp_value_y=player_rect.bottomleft
-    #     player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*300
-    #     value_x+=1
-    #     value_y+=1
-
-    
+    Bird_collision+=1
     pygame.display.update()#update le display géneral
 
 

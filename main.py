@@ -119,17 +119,33 @@ while run==True:
             scrollsentier=0
 
         if BirdHere==True:
+            BirdI+=1
             screen.blit(Bird,(Bird_x,Bird_y))
             Bird_x-=ValeurDefilementGlobale*1.3
-            Bird_y+=random.randint(-2 ,2)
+            Bird_y+=random.randint(-1 ,1)
+            if 0<=BirdI<5:
+                Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk1.png')), (100, 100))
+            elif 5<=BirdI<10:
+                Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk2.png')), (100, 100))
+            elif 10<=BirdI<15:
+                Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk3.png')), (100, 100))
+            elif 15<=BirdI<20:
+                Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk4.png')), (100, 100))
+            elif 20<=BirdI<25:
+                Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk5.png')), (100, 100))
+            elif 25<=BirdI<30:
+                Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk6.png')), (100, 100))
+            else:
+                BirdI=0
+            print(BirdI)
             if Bird_x<-100:
                 BirdHere=False
 
         if not ValeurDefilementGlobale==0:
-            player = pygame.transform.rotate(player, 90)
 
             if random.randint(0,200)==100 and BirdHere==False:
                 BirdHere=True
+                BirdI=0
                 Bird_x=2000
                 Bird_y=random.randint(0,400)
 

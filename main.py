@@ -222,7 +222,7 @@ def run_menu():
                     run=False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        run = False 
+                        run_menu() # Retourne au menu 
 
 
 

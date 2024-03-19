@@ -11,7 +11,7 @@ from menu import Menu
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
 
-nom_player="player_stand.png"
+nom_player="frame0000.png"
 chemin_player=os.path.join(script_path,nom_player)
 nom_sky="background.png"
 chemin_sky=os.path.join(script_path,nom_sky)
@@ -58,6 +58,8 @@ Bird=pygame.transform.scale(Bird,(100,100))
 Bird_rect=Bird.get_rect()
 
 player=pygame.image.load(chemin_player)
+player=pygame.transform.rotate(player,90)
+player=pygame.transform.scale(player,(90,110))
 player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+280))
 
 jauge=pygame.image.load(chemin_jauge)
@@ -96,6 +98,8 @@ Bird_collision=0
 
 value_x=0
 value_y=0
+
+angle_rotation=0
 
 slides=math.ceil(WIDTH / WIDTH) + 1
 
@@ -180,7 +184,6 @@ def run_menu():
                 if ValeurDefilementGlobale==0:
                     BirdHere=False
 
-
             keys=pygame.key.get_pressed()
             for event in pygame.event.get(): #check si la touche échap est pressée et quitte le jeu si c'est le cas
                 if event.type==pygame.QUIT :
@@ -234,7 +237,6 @@ def run_menu():
                     print_bird_hit=False
                 if print_bird_hit:
                     screen.blit(text4,(500,10))
-                    print("screen=true")
                 screen.blit(text2, (210, 10))
                 screen.blit(text3,(360,10))
                 
@@ -253,7 +255,7 @@ def run_menu():
                     pos_x, pos_y=trajectory(angle/number_of_rebound, strenght_value/number_of_rebound, total_time, time_interval)
                     compute_trajectory=True
                 tmp_value_x,tmp_value_y=player_rect.bottomleft
-                player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*300
+                player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*400
                 value_x+=1
                 value_y+=1
                 if strenght_value/number_of_rebound<3 or angle/number_of_rebound<15:

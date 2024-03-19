@@ -238,6 +238,27 @@ def run_menu():
                 angle_value=angle
                 arrow_activated=False
 
+            if keys[pygame.K_r]: # reset le jeu
+                angle=0
+                angle_value=0
+                strenght_value=0
+                jauge_activated=True
+                arrow_activated=True
+                player_rect.bottomleft=(WIDTH//3,sentier_rect.top+280)
+                rebound=False
+                tmp_rebound=False
+                number_of_rebound=1
+                Score=0
+                count_score=0
+                print_bird_hit=False
+                Bird_collision=0
+                BirdHere=False
+                value_x=0
+                value_y=0
+                slides=math.ceil(WIDTH / WIDTH) + 1
+                compute_trajectory=True
+                ValeurDefilementGlobale=7
+
             screen.blit(player,player_rect)
 
             if jauge_activated:
@@ -299,7 +320,7 @@ def run_menu():
                     value_y=0
                     compute_trajectory=False
                     number_of_rebound+=0.25
-                    ValeurDefilementGlobale-=2.5
+                    ValeurDefilementGlobale-=3.75
 
             Bird_collision+=1
             pygame.display.update()#update le display géneral

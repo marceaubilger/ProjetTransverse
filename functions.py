@@ -7,7 +7,7 @@ def compute_time_parameters(strength, angle, precision=0.01):
     angle_rad = np.deg2rad(angle)
 
     # Gravity constant (m/s^2)
-    g = 9.81
+    g = 25
 
     # Initial velocity components
     v_initial_y = strength * np.sin(angle_rad)
@@ -28,7 +28,7 @@ def trajectory(angle, initial_speed, total_time, time_interval):
     angle_radians = math.radians(angle)
     speed_x = initial_speed * np.cos(angle_radians)
     speed_y = initial_speed * np.sin(angle_radians)
-    g = 9.81 #gravity
+    g = 25 #gravity
 
     #number of intervals of time
     number_of_points = int(total_time / time_interval)
@@ -52,3 +52,4 @@ def trajectory(angle, initial_speed, total_time, time_interval):
             break
 
     return pos_x, pos_y
+

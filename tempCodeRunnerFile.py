@@ -1,1 +1,1 @@
-run_menu()
+print

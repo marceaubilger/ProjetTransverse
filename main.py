@@ -23,7 +23,7 @@ nom_jauge="buttonLong_brown.png"
 chemin_jauge=os.path.join(script_path,nom_jauge)
 nom_montain="mountain.png"
 chemin_mountain=os.path.join(script_path,nom_montain)
-nom_sentier="sand_1.png"
+nom_sentier="sand_2.png"
 chemin_sentier=os.path.join(script_path,nom_sentier)
 
 pygame.font.init()
@@ -106,9 +106,8 @@ slides=math.ceil(WIDTH / WIDTH) + 1
 # Options for the menu
 menu_options = ['Play', 'Options', 'Quit']
 menu = Menu(screen, menu_options)
-
+ValeurDefilementGlobale=7
 run = True
-
 # Function to run the menu
 def run_menu():
     global player,run,FramePlayer, is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird
@@ -122,13 +121,14 @@ def run_menu():
                     ValeurDefilementGlobale=0
                 else: 
                     Score+=1
-                    ValeurDefilementGlobale=7
+                    if ValeurDefilementGlobale<3:
+                        ValeurDefilementGlobale=3
+                    ValeurDefilementGlobale+=0.1
                     if random.randint(0,200)==100 and BirdHere==False:
                         BirdHere=True
                         BirdI=0
                         Bird_rect.x=2000
                         Bird_rect.y=random.randint(0,400)
-
                     if 0<=FramePlayer<5:
                         player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0000.png')), (150, 100))
                     if 5<=FramePlayer<10:
@@ -159,7 +159,7 @@ def run_menu():
                     elif FramePlayer>65:
                         FramePlayer=0
                     FramePlayer += 1
-                    print(FramePlayer)
+                    #print(FramePlayer)
                     FramePlayer += 1
 
                 for i in range(0,slides+1):
@@ -199,10 +199,10 @@ def run_menu():
                         Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk3.png')), (100, 100))
                     elif 15<=BirdI<20:
                         Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk4.png')), (100, 100))
-                    #elif 20<=BirdI<25:
-                        #Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk5.png')), (100, 100))
-                    #elif 25<=BirdI<30:
-                        #Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk6.png')), (100, 100))
+                    elif 20<=BirdI<25:
+                        Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk5.png')), (100, 100))
+                    elif 25<=BirdI<30:
+                        Bird=pygame.transform.scale(pygame.image.load(os.path.join('obstacles', 'Bird', 'Walk6.png')), (100, 100))
                     else:
                         BirdI=0
                     if Bird_rect.x<-100:
@@ -269,7 +269,6 @@ def run_menu():
                     print_bird_hit=False
                 if print_bird_hit:
                     screen.blit(text4,(500,10))
-                    print("screen=true")
                 screen.blit(text2, (210, 10))
                 screen.blit(text3,(360,10))
                 
@@ -288,7 +287,7 @@ def run_menu():
                     pos_x, pos_y=trajectory(angle/number_of_rebound, strenght_value/number_of_rebound, total_time, time_interval)
                     compute_trajectory=True
                 tmp_value_x,tmp_value_y=player_rect.bottomleft
-                player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*300
+                player_rect.bottomleft=tmp_value_x,HEIGHT-pos_y[value_y]*400
                 value_x+=1
                 value_y+=1
                 if strenght_value/number_of_rebound<3 or angle/number_of_rebound<15:
@@ -300,6 +299,7 @@ def run_menu():
                     value_y=0
                     compute_trajectory=False
                     number_of_rebound+=0.25
+                    ValeurDefilementGlobale-=2.5
 
             Bird_collision+=1
             pygame.display.update()#update le display géneral

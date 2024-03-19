@@ -11,7 +11,7 @@ from menu import Menu
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
 
-nom_player="player_stand.png"
+nom_player="Player/Frame0000.png"
 chemin_player=os.path.join(script_path,nom_player)
 nom_sky="background.png"
 chemin_sky=os.path.join(script_path,nom_sky)
@@ -58,6 +58,7 @@ Bird=pygame.transform.scale(Bird,(100,100))
 Bird_rect=Bird.get_rect()
 
 player=pygame.image.load(chemin_player)
+player=pygame.transform.scale(player,(150,100))
 player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+280))
 
 jauge=pygame.image.load(chemin_jauge)
@@ -93,6 +94,7 @@ scrollsentier=0
 BirdHere=False
 print_bird_hit=False
 Bird_collision=0
+FramePlayer=0
 
 value_x=0
 value_y=0
@@ -107,7 +109,7 @@ run = True
 
 # Function to run the menu
 def run_menu():
-    global run, is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird
+    global player,run,FramePlayer, is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird
     option = menu.run()
     if option == 0:  # Play
         print("Starting the game...")
@@ -125,6 +127,38 @@ def run_menu():
                         Bird_rect.x=2000
                         Bird_rect.y=random.randint(0,400)
 
+                    if 0<=FramePlayer<5:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0000.png')), (150, 100))
+                    if 5<=FramePlayer<10:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0001.png')), (150, 100))
+                    if 10<=FramePlayer<15:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0002.png')), (150, 100))
+                    if 15<=FramePlayer<20:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0003.png')), (150, 100))
+                    if 20<=FramePlayer<25:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0004.png')), (150, 100))
+                    if 25<=FramePlayer<30:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0005.png')), (150, 100))
+                    if 30<=FramePlayer<35:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0006.png')), (150, 100))
+                    if 35<=FramePlayer<40:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0007.png')), (150, 100))
+                    if 40<=FramePlayer<45:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0008.png')), (150, 100))
+                    if 45<=FramePlayer<50:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0009.png')), (150, 100))
+                    if 50<=FramePlayer<55:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0010.png')), (150, 100))
+                    if 55<=FramePlayer<60:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0011.png')), (150, 100))
+                    if 60<=FramePlayer<65:
+                        player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0012.png')), (150, 100))
+
+                    elif FramePlayer>65:
+                        FramePlayer=0
+                    FramePlayer += 1
+                    print(FramePlayer)
+                    FramePlayer += 1
 
                 for i in range(0,slides+1):
                     screen.blit(resized_sky,(i * WIDTH+scrollsky, 0))

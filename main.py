@@ -99,6 +99,8 @@ FramePlayer=0
 value_x=0
 value_y=0
 
+angle_rotation=0
+
 slides=math.ceil(WIDTH / WIDTH) + 1
 
 # Options for the menu
@@ -213,7 +215,6 @@ def run_menu():
 
                 if ValeurDefilementGlobale==0:
                     BirdHere=False
-
 
             keys=pygame.key.get_pressed()
             for event in pygame.event.get(): #check si la touche échap est pressée et quitte le jeu si c'est le cas

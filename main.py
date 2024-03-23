@@ -73,6 +73,7 @@ move_bar=15
 screen=pygame.display.set_mode((WIDTH,HEIGHT))
 clock=pygame.time.Clock()
 
+# Variables : 
 is_in_trajectory=False
 compute_trajectory=True
 rebound=False

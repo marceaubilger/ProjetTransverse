@@ -330,9 +330,10 @@ def run_menu():
         print("Opening options...")
         # Add code to open options screen
     elif option == 2:  # Quit
+        print("Quitting the game...")
         pygame.quit()
         sys.exit()
-        print("Quitting the game...")
+        
 
 run_menu()
 

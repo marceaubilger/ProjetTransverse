@@ -11,23 +11,23 @@ from menu import Menu
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
 
-nom_music_background="neon-gaming-128925.mp3"
+nom_music_background="sons/neon-gaming-128925.mp3"
 chemin_music_background=os.path.join(script_path,nom_music_background)
 play_background_music(chemin_music_background)
 
 nom_player="Player/Frame0000.png"
 chemin_player=os.path.join(script_path,nom_player)
-nom_sky="background.png"
+nom_sky="map/background.png"
 chemin_sky=os.path.join(script_path,nom_sky)
-nom_sol="base_sol_3.png"
+nom_sol="map/base_sol_3.png"
 chemin_sol=os.path.join(script_path,nom_sol)
-nom_arrow="pngwing.com.png"
+nom_arrow="map/pngwing.com.png"
 chemin_arrow=os.path.join(script_path,nom_arrow)
-nom_jauge="buttonLong_brown.png"
+nom_jauge="map/buttonLong_brown.png"
 chemin_jauge=os.path.join(script_path,nom_jauge)
-nom_montain="mountain.png"
+nom_montain="map/mountain.png"
 chemin_mountain=os.path.join(script_path,nom_montain)
-nom_sentier="sand_2.png"
+nom_sentier="map/sand_2.png"
 chemin_sentier=os.path.join(script_path,nom_sentier)
 
 pygame.font.init()

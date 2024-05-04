@@ -12,13 +12,17 @@ class Menu:
         self.mouse_over_option = None
         self.using_mouse = False
         self.font = pygame.font.Font('font/Buycat.ttf', 52)
+        self.title_font = pygame.font.Font('font/Buycat.ttf', 100)
+        self.title = self.title_font.render("My Game", True, (255, 255, 255))
 
     def display_menu(self):
         self.screen.fill((0, 0, 0))
+        screen_width, screen_height = self.screen.get_size()
+        title_rect = self.title.get_rect(center=(screen_width // 2.1, screen_height // 6))
+        self.screen.blit(self.title, title_rect)
         mouse_pos = pygame.mouse.get_pos()
         for index, option in enumerate(self.options):
             text_surface = self.font.render(option, True, (255, 255, 255))
-            screen_width, screen_height = self.screen.get_size()
             text_rect = text_surface.get_rect(center=(screen_width // 2.1, screen_height // 3 + index * 100))
             if (self.using_mouse and index == self.mouse_over_option) or (not self.using_mouse and index == self.selected_option):
                 text_surface = self.font.render(option, True, (128, 128, 128))  # Change the color to gray
@@ -48,7 +52,7 @@ class Menu:
                     # Check if the mouse is over any of the options
                     for index, option in enumerate(self.options):
                         text_surface = self.font.render(option, True, (255, 255, 255))
-                        text_rect = text_surface.get_rect(center=(WIDTH//2.1, HEIGHT// 3 + index * 100))
+                        text_rect = text_surface.get_rect(center=(WIDTH//2.1, HEIGHT// 2.9 + index * 100))
                         if text_rect.collidepoint(mouse_pos):
                             self.mouse_over_option = index
                             break

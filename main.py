@@ -11,6 +11,10 @@ from menu import Menu
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
 
+nom_music_background="neon-gaming-128925.mp3"
+chemin_music_background=os.path.join(script_path,nom_music_background)
+play_background_music(chemin_music_background)
+
 nom_player="Player/Frame0000.png"
 chemin_player=os.path.join(script_path,nom_player)
 nom_sky="background.png"
@@ -103,6 +107,7 @@ value_y=0
 angle_rotation=0
 
 slides=math.ceil(WIDTH / WIDTH) + 1
+
 
 # Options for the menu
 menu_options = ['Play', 'Options', 'Quit']
@@ -227,8 +232,8 @@ def run_menu():
 
 
 
-            if keys[pygame.K_UP]:# fait une sorte de gravité, pas neccessaire en fonction de la future fonction trajectoire
-                player_rect.y-=15
+            #if keys[pygame.K_UP]:# fait une sorte de gravité, pas neccessaire en fonction de la future fonction trajectoire
+            #    player_rect.y-=15
 
             if keys[pygame.K_SPACE] and jauge_activated==True: # calcule la valeur de la jauge lorsque la touche aspace est pressée
                 strenght_value=(HEIGHT-bar_rect.y)/20

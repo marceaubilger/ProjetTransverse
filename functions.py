@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import pygame 
 
 value_x=0
 def compute_time_parameters(strength, angle, precision=0.01):
@@ -53,3 +54,7 @@ def trajectory(angle, initial_speed, total_time, time_interval):
 
     return pos_x, pos_y
 
+def play_background_music(music_path):
+    pygame.mixer.init()
+    pygame.mixer.music.load(music_path)
+    pygame.mixer.music.play(-1)

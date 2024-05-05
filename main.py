@@ -7,6 +7,8 @@ from functions import *
 import random
 import time
 from menu import Menu
+from pygame import mixer
+
 
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
@@ -333,13 +335,10 @@ def run_menu():
             pygame.display.update()#update le display géneral
     elif option == 1:  # Options
         print("Opening options...")
-        # Add code to open options screen
+        options_window(run_menu)
     elif option == 2:  # Quit
         print("Quitting the game...")
         pygame.quit()
         sys.exit()
         
-
 run_menu()
-
-#commit

@@ -5,6 +5,7 @@ from pygame.locals import *
 WIDTH, HEIGHT = 1200,650
 
 class Menu:
+
     def __init__(self, screen, options):
         self.screen = screen
         self.options = options
@@ -23,7 +24,7 @@ class Menu:
         mouse_pos = pygame.mouse.get_pos()
         for index, option in enumerate(self.options):
             text_surface = self.font.render(option, True, (255, 255, 255))
-            text_rect = text_surface.get_rect(center=(screen_width // 2.1, screen_height // 3 + index * 100))
+            text_rect = text_surface.get_rect(center=(screen_width // 2.1, screen_height // 2.8 + index * 100))
             if (self.using_mouse and index == self.mouse_over_option) or (not self.using_mouse and index == self.selected_option):
                 text_surface = self.font.render(option, True, (128, 128, 128))  # Change the color to gray
             self.screen.blit(text_surface, text_rect)

@@ -9,13 +9,23 @@ import time
 from menu import Menu
 from pygame import mixer
 
-
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
 
-nom_music_background="sons/neon-gaming-128925.mp3"
+#background music
+nom_music_background="sons/Firelight.mp3"
 chemin_music_background=os.path.join(script_path,nom_music_background)
 play_background_music(chemin_music_background)
+
+#Load the bird hit sound
+nom_bird_hit_sound="sons/raven-caw-caw.mp3"
+chemin_bird_hit_sound = os.path.join(script_path, nom_bird_hit_sound)
+bird_hit_sound = mixer.Sound(chemin_bird_hit_sound)
+
+# Load the ground hit sound
+nom_ground_hit_sound = "sons/punch-sound-effect-meme.mp3"
+chemin_ground_hit_sound = os.path.join(script_path, nom_ground_hit_sound)
+ground_hit_sound = mixer.Sound(chemin_ground_hit_sound)
 
 nom_player="Player/Frame0000.png"
 chemin_player=os.path.join(script_path,nom_player)
@@ -122,6 +132,8 @@ def run_menu():
     option = menu.run()
     if option == 0:  # Play
         print("Starting the game...")
+        player_on_ground = True # Add a flag to check if the player is already on the ground
+        PLAY_GROUND_HIT_SOUND = pygame.USEREVENT + 1  # Custom event for playing the ground hit sound
         while run == True:
             clock.tick(60)
             if(run):
@@ -220,6 +232,8 @@ def run_menu():
                     Score+=100
                     Bird_collision=0
                     count_score=100
+                    #play the bird hit sound
+                    bird_hit_sound.play()
 
                 if ValeurDefilementGlobale==0:
                     BirdHere=False
@@ -231,8 +245,9 @@ def run_menu():
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         run_menu() # Retourne au menu 
-
-
+                
+                if event.type == PLAY_GROUND_HIT_SOUND:
+                    ground_hit_sound.play()
 
             #if keys[pygame.K_UP]:# fait une sorte de gravité, pas neccessaire en fonction de la future fonction trajectoire
             #    player_rect.y-=15
@@ -330,6 +345,19 @@ def run_menu():
                     compute_trajectory=False
                     number_of_rebound+=0.25
                     ValeurDefilementGlobale-=3.75
+
+            # Check if the player hits the ground
+            if player_rect.bottom >= resized_ground_rect.top:
+                if not player_on_ground:  # Play the sound only if the player is not already on the ground
+                    # Remove the lines that reset the player's position or affect the game's flow
+
+                    # Schedule the custom event to play the ground hit sound
+                    pygame.time.set_timer(PLAY_GROUND_HIT_SOUND, 100, 1)
+
+                player_on_ground = True  # Update the flag
+
+            else:
+                player_on_ground = False  # Update the flag
 
             Bird_collision+=1
             pygame.display.update()#update le display géneral

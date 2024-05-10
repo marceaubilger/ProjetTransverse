@@ -65,22 +65,20 @@ def play_background_music(music_path):
     pygame.mixer.music.play(-1)
 
 volume = 0.5
-def options_window(run_menu):
+def options_window(run_menu, background_image):
     global volume
     options_screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     run = True
     while run:
         clock.tick(60)
-        options_screen.fill((0, 0, 0))
-        options_screen.blit(pygame.image.load('font/menu_background_no_light.jpg'), (0, 0))
-        font = pygame.font.Font(None, 36)
-        text = font.render("Volume: " + str(volume), True, (255, 255, 255))
+        options_screen.blit(background_image, (0, 0))
+        font = pygame.font.Font('font/Buycat.ttf', 52)
+        text = font.render("Volume: " + str(round(volume, 2)), True, (255, 255, 255))
         options_screen.blit(text, (50, 50))
 
         pygame.draw.rect(options_screen, (255, 255, 255), pygame.Rect(50, 100, 200, 30))
         pygame.draw.rect(options_screen, (0, 255, 0), pygame.Rect(52 + volume * 196, 102, 16, 26))
-        pygame.draw.rect(options_screen, (255, 0, 0), pygame.Rect(50, 200, 200, 50))
         text = font.render("Back", True, (255, 255, 255))
         options_screen.blit(text, (85, 215))
         mouse_pos = pygame.mouse.get_pos()
@@ -93,7 +91,9 @@ def options_window(run_menu):
                     run_menu()
                 if pygame.Rect(50, 100, 200, 30).collidepoint(mouse_pos):
                     volume = (mouse_pos[0] - 50) / 196
-                    pygame.mixer.music.set_volume(volume)  # Update the volume
+                    volume = round(volume, 2)
+                    pygame.mixer.music.set_volume(volume)
 
         pygame.display.update()
     pygame.quit()
+

@@ -365,7 +365,7 @@ def run_menu():
             pygame.display.update()#update le display géneral
     elif option == 1:  # Options
         print("Opening options...")
-        options_window(run_menu)
+        options_window(run_menu, background_image)
     elif option == 2:  # Quit
         print("Quitting the game...")
         pygame.quit()

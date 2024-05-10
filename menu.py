@@ -6,9 +6,10 @@ WIDTH, HEIGHT = 1200,650
 
 class Menu:
 
-    def __init__(self, screen, options):
+    def __init__(self, screen, options, background_image):
         self.screen = screen
         self.options = options
+        self.background_image = background_image
         self.selected_option = 0
         self.mouse_over_option = None
         self.using_mouse = False
@@ -16,11 +17,19 @@ class Menu:
         self.title_font = pygame.font.Font('font/Buycat.ttf', 100)
         self.title = self.title_font.render("My Game", True, (255, 255, 255))
 
+        # Scale the background image to fit the screen size
+        self.background_image = pygame.transform.scale(self.background_image, (WIDTH, HEIGHT))
+
     def display_menu(self):
-        self.screen.fill((0, 0, 0))
+        # Draw the background image
+        self.screen.blit(self.background_image, (0, 0))
+
+        # Draw the title
         screen_width, screen_height = self.screen.get_size()
         title_rect = self.title.get_rect(center=(screen_width // 2.1, screen_height // 6))
         self.screen.blit(self.title, title_rect)
+
+        # Draw the options
         mouse_pos = pygame.mouse.get_pos()
         for index, option in enumerate(self.options):
             text_surface = self.font.render(option, True, (255, 255, 255))

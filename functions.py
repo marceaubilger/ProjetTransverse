@@ -73,6 +73,7 @@ def options_window(run_menu):
     while run:
         clock.tick(60)
         options_screen.fill((0, 0, 0))
+        options_screen.blit(pygame.image.load('font/menu_background_no_light.jpg'), (0, 0))
         font = pygame.font.Font(None, 36)
         text = font.render("Volume: " + str(volume), True, (255, 255, 255))
         options_screen.blit(text, (50, 50))

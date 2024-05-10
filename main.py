@@ -11,6 +11,8 @@ from pygame import mixer
 
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
+#background image
+background_image = pygame.image.load(os.path.join(script_path, 'font/menu_background_no_light.jpg'))
 
 #background music
 nom_music_background="sons/Firelight.mp3"
@@ -123,7 +125,7 @@ slides=math.ceil(WIDTH / WIDTH) + 1
 
 # Options for the menu
 menu_options = ['Play', 'Options', 'Quit']
-menu = Menu(screen, menu_options)
+menu = Menu(screen, menu_options, background_image)
 ValeurDefilementGlobale=7
 run = True
 # Function to run the menu

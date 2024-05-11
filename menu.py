@@ -27,6 +27,13 @@ class Menu:
         # Draw the title
         screen_width, screen_height = self.screen.get_size()
         title_rect = self.title.get_rect(center=(screen_width // 2.1, screen_height // 6))
+
+        # Create a black shadow effect for the title
+        black_title = self.title_font.render("My Game", True, (0, 0, 0))
+        black_title_rect = black_title.get_rect(center=(title_rect.centerx + 2, title_rect.centery + 2))
+        self.screen.blit(black_title, black_title_rect)
+
+        # Blit the original title on top of the shadow
         self.screen.blit(self.title, title_rect)
 
         # Draw the options
@@ -34,8 +41,16 @@ class Menu:
         for index, option in enumerate(self.options):
             text_surface = self.font.render(option, True, (255, 255, 255))
             text_rect = text_surface.get_rect(center=(screen_width // 2.1, screen_height // 2.8 + index * 100))
+
+            # Create a black shadow effect for the options
+            black_text = self.font.render(option, True, (0, 0, 0))
+            black_text_rect = black_text.get_rect(center=(text_rect.centerx + 2, text_rect.centery + 2))
+            self.screen.blit(black_text, black_text_rect)
+
             if (self.using_mouse and index == self.mouse_over_option) or (not self.using_mouse and index == self.selected_option):
                 text_surface = self.font.render(option, True, (128, 128, 128))  # Change the color to gray
+
+            # Blit the original text on top of the shadow
             self.screen.blit(text_surface, text_rect)
 
     def run(self):

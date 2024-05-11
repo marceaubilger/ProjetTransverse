@@ -73,14 +73,34 @@ def options_window(run_menu, background_image):
     while run:
         clock.tick(60)
         options_screen.blit(background_image, (0, 0))
-        font = pygame.font.Font('font/Buycat.ttf', 52)
-        text = font.render("Volume: " + str(round(volume, 2)), True, (255, 255, 255))
-        options_screen.blit(text, (50, 50))
 
-        pygame.draw.rect(options_screen, (255, 255, 255), pygame.Rect(50, 100, 200, 30))
+        # Create a black shadow effect for the volume text
+        font = pygame.font.Font('font/Buycat.ttf', 52)
+        text = font.render("Volume: " + str(round(volume, 2)), True, (0, 0, 0))
+        text_rect = text.get_rect(topleft=(52, 52))
+        options_screen.blit(text, text_rect)
+
+        # Blit the original volume text on top of the shadow
+        text = font.render("Volume: " + str(round(volume, 2)), True, (255, 255, 255))
+        text_rect = text.get_rect(topleft=(50, 50))
+        options_screen.blit(text, text_rect)
+
+        # Create a black shadow effect for the volume slider
+        pygame.draw.rect(options_screen, (0, 0, 0), pygame.Rect(51 + volume * 196, 103, 14, 24))
+
+        # Draw the original volume slider on top of the shadow
         pygame.draw.rect(options_screen, (0, 255, 0), pygame.Rect(52 + volume * 196, 102, 16, 26))
+
+        # Create a black shadow effect for the back button text
+        text = font.render("Back", True, (0, 0, 0))
+        text_rect = text.get_rect(center=(87, 217))
+        options_screen.blit(text, text_rect)
+
+        # Blit the original back button text on top of the shadow
         text = font.render("Back", True, (255, 255, 255))
-        options_screen.blit(text, (85, 215))
+        text_rect = text.get_rect(center=(85, 215))
+        options_screen.blit(text, text_rect)
+
         mouse_pos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
@@ -96,4 +116,5 @@ def options_window(run_menu, background_image):
 
         pygame.display.update()
     pygame.quit()
+
 

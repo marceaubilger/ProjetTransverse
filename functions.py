@@ -65,7 +65,7 @@ def play_background_music(music_path):
     pygame.mixer.music.play(-1)
 
 volume = 0.5
-def options_window(run_menu, background_image):
+def options_window(run_menu, background_image, bird_hit_sound, ground_hit_sound):
     global volume
     options_screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
@@ -113,10 +113,9 @@ def options_window(run_menu, background_image):
                     volume = (mouse_pos[0] - 50) / 196
                     volume = round(volume, 2)
                     pygame.mixer.music.set_volume(volume)
+                    # Set the volume of all sound effects
+                    bird_hit_sound.set_volume(volume)
+                    ground_hit_sound.set_volume(volume)
 
         pygame.display.update()
     pygame.quit()
-
-
-
-

@@ -45,7 +45,7 @@ nom_sentier="map/sand_2.png"
 chemin_sentier=os.path.join(script_path,nom_sentier)
 
 pygame.font.init()
-font_test = pygame.font.Font(None, 36)  
+font_test = pygame.font.Font(os.path.join(script_path, 'font/Buycat.ttf'), 36)
 
 pygame.init()
 WIDTH, HEIGHT = 1200,650
@@ -121,6 +121,7 @@ value_y=0
 angle_rotation=0
 
 slides=math.ceil(WIDTH / WIDTH) + 1
+
 
 
 # Options for the menu
@@ -267,7 +268,7 @@ def run_menu():
                 if is_in_trajectory is False:
                     angle=0
                     angle_value=0
-                    strenght_value=0
+                    
                     jauge_activated=True
                     arrow_activated=True
                     player_rect.bottomleft=(WIDTH//3,sentier_rect.top+280)
@@ -303,21 +304,21 @@ def run_menu():
                 screen.blit(rotated_arrow, rotated_rect.topleft)# affiche la fleche pour l'angle quand la jauge pour la puissance disparait
 
             if jauge_activated is False:#affiche la force sur l'écran
-                text1 = font_test.render(f"Strenght : {strenght_value}", True, (255, 0, 0))
+                text1 = font_test.render(f"Strenght : {strenght_value}", True, (255, 255, 0))
                 screen.blit(text1, (10, 10))
             if arrow_activated is False: #affiche l'angle sur l'écran
-                text2 = font_test.render(f"Angle : {angle}", True, (255, 0, 0))
-                text3=font_test.render(f"Score : {Score}",True,(255,0,0))
-                text4=font_test.render("+100",True,(255,0,0))
+                text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 0))
+                text3=font_test.render(f"Score : {Score}",True,(255,255,0))
+                text4=font_test.render("+100",True,(255,255,0))
                 if count_score>0:
                     print_bird_hit=True
                     count_score-=1
                 else:
                     print_bird_hit=False
                 if print_bird_hit:
-                    screen.blit(text4,(500,10))
-                screen.blit(text2, (210, 10))
-                screen.blit(text3,(360,10))
+                    screen.blit(text4,(600,10))
+                screen.blit(text2, (280, 10))
+                screen.blit(text3,(470,10))
                 
             
             if arrow_activated is False and jauge_activated is False and rebound is False:

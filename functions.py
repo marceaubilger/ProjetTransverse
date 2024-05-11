@@ -85,11 +85,11 @@ def options_window(run_menu, background_image):
         text_rect = text.get_rect(topleft=(50, 50))
         options_screen.blit(text, text_rect)
 
-        # Create a black shadow effect for the volume slider
-        pygame.draw.rect(options_screen, (0, 0, 0), pygame.Rect(51 + volume * 196, 103, 14, 24))
+        # Draw the background volume bar
+        pygame.draw.rect(options_screen, (255, 255, 255), pygame.Rect(50, 100, 200, 30))
 
-        # Draw the original volume slider on top of the shadow
-        pygame.draw.rect(options_screen, (0, 255, 0), pygame.Rect(52 + volume * 196, 102, 16, 26))
+        # Draw the actual volume bar on top of the background bar
+        pygame.draw.rect(options_screen, (255, 223, 0), pygame.Rect(52 + volume * 196, 102, 16, 26))
 
         # Create a black shadow effect for the back button text
         text = font.render("Back", True, (0, 0, 0))
@@ -116,5 +116,7 @@ def options_window(run_menu, background_image):
 
         pygame.display.update()
     pygame.quit()
+
+
 
 

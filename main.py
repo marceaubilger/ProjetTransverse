@@ -304,7 +304,7 @@ def run_menu():
                 screen.blit(rotated_arrow, rotated_rect.topleft)# affiche la fleche pour l'angle quand la jauge pour la puissance disparait
 
             if jauge_activated is False:#affiche la force sur l'écran
-                text1 = font_test.render(f"Strenght : {strenght_value}", True, (255, 255, 0))
+                text1 = font_test.render(f"Strength : {strenght_value}", True, (255, 255, 0))
                 screen.blit(text1, (10, 10))
             if arrow_activated is False: #affiche l'angle sur l'écran
                 text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 0))

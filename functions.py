@@ -108,7 +108,7 @@ def options_window(run_menu, background_image, bird_hit_sound, ground_hit_sound)
         options_screen.blit(text, text_rect)
 
         # display the key bindings of the game controls at the right side of the screen
-        text = "Key Bindings :\n - m = menu\n - r = restart the game\n - space = chose the strength of the shot\n - Enter = chose the angle of the shot"
+        text = "Key Bindings :\n - M = menu\n - R = restart the game\n - Space = chose the strength of the shot\n - Enter = chose the angle of the shot\n - C = clear the high score"
         lignes = text.split("\n")
 
         for i, l in enumerate(lignes):

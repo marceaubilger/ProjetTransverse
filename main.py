@@ -8,6 +8,7 @@ import random
 import time
 from menu import Menu
 from pygame import mixer
+import pickle
 
 #trouve le chemin d'acces pour les sprites pour pouvoir les utiliser
 script_path = os.path.abspath(sys.argv[0]).replace("main.py","")
@@ -137,12 +138,17 @@ run = True
 def run_menu():
     global player,run,FramePlayer, is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird
     option = menu.run()
+    try : 
+        with open('high_score.pickle', 'rb') as f:
+            high_score = pickle.load(f)
+    except:
+        high_score = 0
     if option == 0:  # Play
         print("Starting the game...")
         player_on_ground = True # Add a flag to check if the player is already on the ground
         PLAY_GROUND_HIT_SOUND = pygame.USEREVENT + 1  # Custom event for playing the ground hit sound
         while run == True:
-            clock.tick(60)
+            clock.tick(60) 
             if(run):
                 if is_in_trajectory is False:
                     ValeurDefilementGlobale=0
@@ -252,6 +258,7 @@ def run_menu():
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_m:
                         run_menu() # Retourne au menu 
+                        strenght_value = 0
                 
                 if event.type == PLAY_GROUND_HIT_SOUND:
                     ground_hit_sound.play()
@@ -269,7 +276,7 @@ def run_menu():
                 if is_in_trajectory is False:
                     angle=0
                     angle_value=0
-                    
+                    strenght_value=0
                     jauge_activated=True
                     arrow_activated=True
                     player_rect.bottomleft=(WIDTH//3,sentier_rect.top+280)
@@ -286,6 +293,11 @@ def run_menu():
                     slides=math.ceil(WIDTH / WIDTH) + 1
                     compute_trajectory=True
                     ValeurDefilementGlobale=7
+                
+            if keys[pygame.K_c]: #clear high score
+                high_score=0
+                with open('high_score.pickle', 'wb') as f:
+                    pickle.dump(high_score, f)
 
             screen.blit(player,player_rect)
 
@@ -305,7 +317,12 @@ def run_menu():
                 rotated_rect = rotated_arrow.get_rect(center=arrow_rect.center)
                 screen.blit(rotated_arrow, rotated_rect.topleft)# affiche la fleche pour l'angle quand la jauge pour la puissance disparait
 
-            high_score = 0 # Load the high score from the file
+            if Score > high_score:
+                high_score = Score
+
+            text5 = font_test.render(f"High Score : {high_score}", True, (255, 255, 255))
+            screen.blit(text5,(10,50))
+
             if player_rect.colliderect(Bird_rect) and Bird_collision>50:
                 Score+=100
                 Bird_collision=0
@@ -314,7 +331,6 @@ def run_menu():
                 bird_hit_sound.play()
                 update_high_score(Score)  # mettre à jour le high score
 
-
             if jauge_activated is False:#affiche la force sur l'écran
                 text1 = font_test.render(f"Strength : {strenght_value}", True, (255, 255, 255))
                 screen.blit(text1, (10, 10))
@@ -322,7 +338,6 @@ def run_menu():
                 text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 255))
                 text3=font_test.render(f"Score : {Score}",True,(255, 255, 255))
                 text4=font_test.render("+100",True,(255, 255, 255))
-                text5 = font_test.render(f"High Score : {high_score}", True, (255, 255, 255))
                 if count_score>0:
                     print_bird_hit=True
                     count_score-=1
@@ -332,7 +347,6 @@ def run_menu():
                     screen.blit(text4,(700,10))
                 screen.blit(text2, (300, 10))
                 screen.blit(text3,(500,10))
-                screen.blit(text5,(10,50))
                 
             
             if arrow_activated is False and jauge_activated is False and rebound is False:
@@ -371,8 +385,9 @@ def run_menu():
                     # Schedule the custom event to play the ground hit sound
                     pygame.time.set_timer(PLAY_GROUND_HIT_SOUND, 100, 1)
 
-                player_on_ground = True  # Update the flag
-
+                player_on_ground = True  # Update the flag 
+                with open('high_score.pickle', 'wb') as f:
+                    pickle.dump(high_score, f)
             else:
                 player_on_ground = False  # Update the flag
 

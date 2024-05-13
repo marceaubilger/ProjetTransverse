@@ -37,12 +37,14 @@ nom_sol="map/base_sol_3.png"
 chemin_sol=os.path.join(script_path,nom_sol)
 nom_arrow="map/pngwing.com.png"
 chemin_arrow=os.path.join(script_path,nom_arrow)
-nom_jauge="map/buttonLong_brown.png"
+nom_jauge="jauge_stp.png"
 chemin_jauge=os.path.join(script_path,nom_jauge)
 nom_montain="map/mountain.png"
 chemin_mountain=os.path.join(script_path,nom_montain)
 nom_sentier="map/sand_2.png"
 chemin_sentier=os.path.join(script_path,nom_sentier)
+nom_bar="map/buttonLong_brown.png"
+chemin_bar=os.path.join(script_path,nom_bar)
 
 pygame.font.init()
 font_test = pygame.font.Font(os.path.join(script_path, 'font/Buycat.ttf'), 36)
@@ -80,10 +82,12 @@ player=pygame.transform.scale(player,(150,100))
 player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+280))
 
 jauge=pygame.image.load(chemin_jauge)
-jauge_rect=jauge.get_rect(bottomleft=(100,HEIGHT*2/3))
+jauge_rect=jauge.get_rect(bottomleft=(100,HEIGHT))
 
-bar=pygame.transform.scale(jauge,(50,10))
-bar_rect=bar.get_rect(bottomleft=(180,HEIGHT*2/3))
+
+bar=pygame.image.load(chemin_bar)
+bar=pygame.transform.scale(bar,(50,10))
+bar_rect=bar.get_rect(bottomleft=(180,HEIGHT*1/3))
 jauge_activated=True
 move_bar=15
 
@@ -252,9 +256,6 @@ def run_menu():
                 if event.type == PLAY_GROUND_HIT_SOUND:
                     ground_hit_sound.play()
 
-            #if keys[pygame.K_UP]:# fait une sorte de gravité, pas neccessaire en fonction de la future fonction trajectoire
-            #    player_rect.y-=15
-
             if keys[pygame.K_SPACE] and jauge_activated==True: # calcule la valeur de la jauge lorsque la touche aspace est pressée
                 strenght_value=(HEIGHT-bar_rect.y)/20
                 strenght_value=round(strenght_value, 2)
@@ -289,9 +290,10 @@ def run_menu():
             screen.blit(player,player_rect)
 
             if jauge_activated:
-                if(bar_rect.bottom==jauge_rect.bottom or bar_rect.top==jauge_rect.top):
+                if(bar_rect.bottom>=jauge_rect.bottom-240 or bar_rect.top<=jauge_rect.top+140):
                     move_bar*=-1
                 bar_rect.bottom+=move_bar
+                #print("     ", bar_rect.bottom,"  \n", jauge_rect.bottom)
                 screen.blit(jauge,jauge_rect)
                 screen.blit(bar,bar_rect)#fait monter et descendre la jauge pour la puissance
 
@@ -316,9 +318,9 @@ def run_menu():
                 else:
                     print_bird_hit=False
                 if print_bird_hit:
-                    screen.blit(text4,(670,10))
-                screen.blit(text2, (270, 10))
-                screen.blit(text3,(470,10))
+                    screen.blit(text4,(700,10))
+                screen.blit(text2, (290, 10))
+                screen.blit(text3,(490,10))
                 
             
             if arrow_activated is False and jauge_activated is False and rebound is False:

@@ -258,10 +258,12 @@ def run_menu():
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_m:
                         run_menu() # Retourne au menu 
-                        strenght_value = 0
                 
                 if event.type == PLAY_GROUND_HIT_SOUND:
                     ground_hit_sound.play()
+
+            if keys[pygame.K_m]:
+                run_menu()
 
             if keys[pygame.K_SPACE] and jauge_activated==True: # calcule la valeur de la jauge lorsque la touche aspace est pressée
                 strenght_value=(HEIGHT-bar_rect.y)/20

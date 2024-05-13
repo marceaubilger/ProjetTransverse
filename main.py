@@ -31,7 +31,7 @@ ground_hit_sound = mixer.Sound(chemin_ground_hit_sound)
 
 nom_player="Player/Frame0000.png"
 chemin_player=os.path.join(script_path,nom_player)
-nom_sky="map/background.png"
+nom_sky="map/CIEL.png"
 chemin_sky=os.path.join(script_path,nom_sky)
 nom_sol="map/base_sol_3.png"
 chemin_sol=os.path.join(script_path,nom_sol)

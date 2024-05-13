@@ -305,7 +305,7 @@ def run_menu():
                 rotated_rect = rotated_arrow.get_rect(center=arrow_rect.center)
                 screen.blit(rotated_arrow, rotated_rect.topleft)# affiche la fleche pour l'angle quand la jauge pour la puissance disparait
 
-
+            high_score = 0 # Load the high score from the file
             if player_rect.colliderect(Bird_rect) and Bird_collision>50:
                 Score+=100
                 Bird_collision=0
@@ -322,7 +322,7 @@ def run_menu():
                 text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 255))
                 text3=font_test.render(f"Score : {Score}",True,(255, 255, 255))
                 text4=font_test.render("+100",True,(255, 255, 255))
-                text5=font_test.render("High Score : ",True,(255, 255, 255))
+                text5 = font_test.render(f"High Score : {high_score}", True, (255, 255, 255))
                 if count_score>0:
                     print_bird_hit=True
                     count_score-=1

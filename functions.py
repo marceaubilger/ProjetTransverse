@@ -69,6 +69,18 @@ def update_high_score(score):
     if score > high_score:
         high_score = score
 
+def draw_text_with_outline(text, font, color, surface, x, y):
+    outline_color = (0, 0, 0)  # Black outline color
+    offsets = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]  # Create a list of offsets
+    offsets.remove((0, 0))  # Remove the original position from the offsets
+
+    for offset in offsets:
+        text_surface = font.render(text, True, outline_color)
+        surface.blit(text_surface, (x + offset[0], y + offset[1]))
+
+    text_surface = font.render(text, True, color)
+    surface.blit(text_surface, (x, y))
+
 
 volume = 0.1
 def options_window(run_menu, background_image, bird_hit_sound, ground_hit_sound):

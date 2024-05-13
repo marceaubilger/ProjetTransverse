@@ -324,8 +324,7 @@ def run_menu():
             if Score > high_score:
                 high_score = Score
 
-            text5 = font_test.render(f"High Score : {high_score}", True, (255, 255, 255))
-            screen.blit(text5,(10,50))
+            draw_text_with_outline(f"High Score : {high_score}", font_test, (255, 255, 255), screen, 10, 50)
 
             if player_rect.colliderect(Bird_rect) and Bird_collision>50:
                 Score+=100
@@ -335,22 +334,22 @@ def run_menu():
                 bird_hit_sound.play()
                 update_high_score(Score)  # mettre à jour le high score
 
-            if jauge_activated is False:#affiche la force sur l'écran
-                text1 = font_test.render(f"Strength : {strenght_value}", True, (255, 255, 255))
-                screen.blit(text1, (10, 10))
-            if arrow_activated is False: #affiche l'angle sur l'écran
-                text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 255))
-                text3=font_test.render(f"Score : {Score}",True,(255, 255, 255))
-                text4=font_test.render("+100",True,(255, 255, 255))
-                if count_score>0:
-                    print_bird_hit=True
-                    count_score-=1
+            if not jauge_activated:  # affiche la force sur l'écran
+                draw_text_with_outline(f"Strength : {strenght_value}", font_test, (255, 255, 255), screen, 10, 10)
+
+
+            if not arrow_activated:  # affiche l'angle sur l'écran
+                draw_text_with_outline(f"Angle : {angle}", font_test, (255, 255, 255), screen, 300, 10)
+                draw_text_with_outline(f"Score : {Score}", font_test, (255, 255, 255), screen, 500, 10)
+
+                if count_score > 0:
+                    print_bird_hit = True
+                    count_score -= 1
                 else:
-                    print_bird_hit=False
+                    print_bird_hit = False
+
                 if print_bird_hit:
-                    screen.blit(text4,(700,10))
-                screen.blit(text2, (300, 10))
-                screen.blit(text3,(500,10))
+                    draw_text_with_outline("+100", font_test, (255, 255, 255), screen, 700, 10)
                 
             
             if arrow_activated is False and jauge_activated is False and rebound is False:

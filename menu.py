@@ -15,7 +15,8 @@ class Menu:
         self.using_mouse = False
         self.font = pygame.font.Font('font/Buycat.ttf', 52)
         self.title_font = pygame.font.Font('font/Buycat.ttf', 100)
-        self.title = self.title_font.render("Smash Dwarf's !", True, (255, 255, 255))
+        self.title_smash = self.title_font.render("Smash", True, (255, 255, 255))
+        self.title_dwarf = self.title_font.render("Dwarf's !", True, (101, 67, 33))  # Brown color for "Dwarf's !"
 
         # Scale the background image to fit the screen size
         self.background_image = pygame.transform.scale(self.background_image, (WIDTH, HEIGHT))
@@ -26,15 +27,20 @@ class Menu:
 
         # Draw the title
         screen_width, screen_height = self.screen.get_size()
-        title_rect = self.title.get_rect(center=(screen_width // 2.1, screen_height // 6))
+        title_smash_rect = self.title_smash.get_rect(center=(screen_width // 3.25, screen_height // 6))
+        title_dwarf_rect = self.title_dwarf.get_rect(center=(screen_width // 1.6, screen_height // 6))
 
         # Create a black shadow effect for the title
-        black_title = self.title_font.render("Smash Dwarf's !", True, (0, 0, 0))
-        black_title_rect = black_title.get_rect(center=(title_rect.centerx + 2, title_rect.centery + 2))
-        self.screen.blit(black_title, black_title_rect)
+        black_title_smash = self.title_font.render("Smash", True, (0, 0, 0))
+        black_title_dwarf = self.title_font.render("Dwarf's !", True, (0, 0, 0))
+        black_title_smash_rect = black_title_smash.get_rect(center=(title_smash_rect.centerx + 2, title_smash_rect.centery + 2))
+        black_title_dwarf_rect = black_title_dwarf.get_rect(center=(title_dwarf_rect.centerx + 2, title_dwarf_rect.centery + 2))
+        self.screen.blit(black_title_smash, black_title_smash_rect)
+        self.screen.blit(black_title_dwarf, black_title_dwarf_rect)
 
         # Blit the original title on top of the shadow
-        self.screen.blit(self.title, title_rect)
+        self.screen.blit(self.title_smash, title_smash_rect)
+        self.screen.blit(self.title_dwarf, title_dwarf_rect)
 
         # Draw the options
         mouse_pos = pygame.mouse.get_pos()
@@ -95,4 +101,3 @@ class Menu:
                             self.selected_option = index
                             self.mouse_over_option = None
                             return self.selected_option
-

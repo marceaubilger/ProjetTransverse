@@ -101,6 +101,22 @@ def options_window(run_menu, background_image, bird_hit_sound, ground_hit_sound)
         text_rect = text.get_rect(center=(85, 215))
         options_screen.blit(text, text_rect)
 
+        # display the key bindings of the game controls at the right side of the screen
+        text = "Key Bindings :\n - m = menu\n - r = restart the game\n - space = chose the strength of the shot\n - Enter = chose the angle of the shot"
+        lignes = text.split("\n")
+
+        for i, l in enumerate(lignes):
+            # Draw the black outline
+            text_black = font.render(l, True, (0, 0, 0))
+            text_rect_black = text_black.get_rect(center=(WIDTH - 553, HEIGHT // 3.5 + i * 75))
+            options_screen.blit(text_black, text_rect_black)
+
+            # Draw the white text on top of the black outline
+            text_white = font.render(l, True, (255, 255, 255))
+            text_rect_white = text_white.get_rect(center=(WIDTH - 550, HEIGHT // 3.5 + i * 75))
+            options_screen.blit(text_white, text_rect_white)
+
+
         mouse_pos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():

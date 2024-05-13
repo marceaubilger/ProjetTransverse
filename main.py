@@ -31,18 +31,20 @@ ground_hit_sound = mixer.Sound(chemin_ground_hit_sound)
 
 nom_player="Player/Frame0000.png"
 chemin_player=os.path.join(script_path,nom_player)
-nom_sky="map/background.png"
+nom_sky="map/CIEL.png"
 chemin_sky=os.path.join(script_path,nom_sky)
 nom_sol="map/base_sol_3.png"
 chemin_sol=os.path.join(script_path,nom_sol)
 nom_arrow="map/pngwing.com.png"
 chemin_arrow=os.path.join(script_path,nom_arrow)
-nom_jauge="map/buttonLong_brown.png"
+nom_jauge="jauge_stp.png"
 chemin_jauge=os.path.join(script_path,nom_jauge)
 nom_montain="map/mountain.png"
 chemin_mountain=os.path.join(script_path,nom_montain)
 nom_sentier="map/sand_2.png"
 chemin_sentier=os.path.join(script_path,nom_sentier)
+nom_bar="map/buttonLong_brown.png"
+chemin_bar=os.path.join(script_path,nom_bar)
 
 pygame.font.init()
 font_test = pygame.font.Font(os.path.join(script_path, 'font/Buycat.ttf'), 36)
@@ -80,10 +82,12 @@ player=pygame.transform.scale(player,(150,100))
 player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+280))
 
 jauge=pygame.image.load(chemin_jauge)
-jauge_rect=jauge.get_rect(bottomleft=(100,HEIGHT*2/3))
+jauge_rect=jauge.get_rect(bottomleft=(100,HEIGHT))
 
-bar=pygame.transform.scale(jauge,(50,10))
-bar_rect=bar.get_rect(bottomleft=(180,HEIGHT*2/3))
+
+bar=pygame.image.load(chemin_bar)
+bar=pygame.transform.scale(bar,(50,10))
+bar_rect=bar.get_rect(bottomleft=(180,HEIGHT*1/3))
 jauge_activated=True
 move_bar=15
 
@@ -252,9 +256,6 @@ def run_menu():
                 if event.type == PLAY_GROUND_HIT_SOUND:
                     ground_hit_sound.play()
 
-            #if keys[pygame.K_UP]:# fait une sorte de gravité, pas neccessaire en fonction de la future fonction trajectoire
-            #    player_rect.y-=15
-
             if keys[pygame.K_SPACE] and jauge_activated==True: # calcule la valeur de la jauge lorsque la touche aspace est pressée
                 strenght_value=(HEIGHT-bar_rect.y)/20
                 strenght_value=round(strenght_value, 2)
@@ -289,9 +290,10 @@ def run_menu():
             screen.blit(player,player_rect)
 
             if jauge_activated:
-                if(bar_rect.bottom==jauge_rect.bottom or bar_rect.top==jauge_rect.top):
+                if(bar_rect.bottom>=jauge_rect.bottom-240 or bar_rect.top<=jauge_rect.top+140):
                     move_bar*=-1
                 bar_rect.bottom+=move_bar
+                #print("     ", bar_rect.bottom,"  \n", jauge_rect.bottom)
                 screen.blit(jauge,jauge_rect)
                 screen.blit(bar,bar_rect)#fait monter et descendre la jauge pour la puissance
 
@@ -303,6 +305,16 @@ def run_menu():
                 rotated_rect = rotated_arrow.get_rect(center=arrow_rect.center)
                 screen.blit(rotated_arrow, rotated_rect.topleft)# affiche la fleche pour l'angle quand la jauge pour la puissance disparait
 
+            high_score = 0 # Load the high score from the file
+            if player_rect.colliderect(Bird_rect) and Bird_collision>50:
+                Score+=100
+                Bird_collision=0
+                count_score=100
+                #play the bird hit sound
+                bird_hit_sound.play()
+                update_high_score(Score)  # mettre à jour le high score
+
+
             if jauge_activated is False:#affiche la force sur l'écran
                 text1 = font_test.render(f"Strength : {strenght_value}", True, (255, 255, 255))
                 screen.blit(text1, (10, 10))
@@ -310,15 +322,17 @@ def run_menu():
                 text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 255))
                 text3=font_test.render(f"Score : {Score}",True,(255, 255, 255))
                 text4=font_test.render("+100",True,(255, 255, 255))
+                text5 = font_test.render(f"High Score : {high_score}", True, (255, 255, 255))
                 if count_score>0:
                     print_bird_hit=True
                     count_score-=1
                 else:
                     print_bird_hit=False
                 if print_bird_hit:
-                    screen.blit(text4,(670,10))
-                screen.blit(text2, (270, 10))
-                screen.blit(text3,(470,10))
+                    screen.blit(text4,(700,10))
+                screen.blit(text2, (300, 10))
+                screen.blit(text3,(500,10))
+                screen.blit(text5,(10,50))
                 
             
             if arrow_activated is False and jauge_activated is False and rebound is False:

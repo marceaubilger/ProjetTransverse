@@ -64,6 +64,12 @@ def play_background_music(music_path):
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play(-1)
 
+def update_high_score(score):
+    global high_score
+    if score > high_score:
+        high_score = score
+
+
 volume = 0.1
 def options_window(run_menu, background_image, bird_hit_sound, ground_hit_sound):
     global volume

@@ -246,7 +246,7 @@ def run_menu():
                 if event.type==pygame.QUIT :
                     run=False
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
+                    if event.key == pygame.K_m:
                         run_menu() # Retourne au menu 
                 
                 if event.type == PLAY_GROUND_HIT_SOUND:

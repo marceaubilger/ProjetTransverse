@@ -15,7 +15,7 @@ class Menu:
         self.using_mouse = False
         self.font = pygame.font.Font('font/Buycat.ttf', 52)
         self.title_font = pygame.font.Font('font/Buycat.ttf', 100)
-        self.title = self.title_font.render("My Game", True, (255, 255, 255))
+        self.title = self.title_font.render("Smash Dwarf's !", True, (255, 255, 255))
 
         # Scale the background image to fit the screen size
         self.background_image = pygame.transform.scale(self.background_image, (WIDTH, HEIGHT))
@@ -29,7 +29,7 @@ class Menu:
         title_rect = self.title.get_rect(center=(screen_width // 2.1, screen_height // 6))
 
         # Create a black shadow effect for the title
-        black_title = self.title_font.render("My Game", True, (0, 0, 0))
+        black_title = self.title_font.render("Smash Dwarf's !", True, (0, 0, 0))
         black_title_rect = black_title.get_rect(center=(title_rect.centerx + 2, title_rect.centery + 2))
         self.screen.blit(black_title, black_title_rect)
 

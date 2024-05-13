@@ -116,6 +116,9 @@ def options_window(run_menu, background_image, bird_hit_sound, ground_hit_sound)
                     # Set the volume of all sound effects
                     bird_hit_sound.set_volume(volume)
                     ground_hit_sound.set_volume(volume)
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    run_menu()
 
         pygame.display.update()
     pygame.quit()

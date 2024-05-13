@@ -304,20 +304,20 @@ def run_menu():
                 screen.blit(rotated_arrow, rotated_rect.topleft)# affiche la fleche pour l'angle quand la jauge pour la puissance disparait
 
             if jauge_activated is False:#affiche la force sur l'écran
-                text1 = font_test.render(f"Strength : {strenght_value}", True, (255, 255, 0))
+                text1 = font_test.render(f"Strength : {strenght_value}", True, (255, 255, 255))
                 screen.blit(text1, (10, 10))
             if arrow_activated is False: #affiche l'angle sur l'écran
-                text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 0))
-                text3=font_test.render(f"Score : {Score}",True,(255,255,0))
-                text4=font_test.render("+100",True,(255,255,0))
+                text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 255))
+                text3=font_test.render(f"Score : {Score}",True,(255, 255, 255))
+                text4=font_test.render("+100",True,(255, 255, 255))
                 if count_score>0:
                     print_bird_hit=True
                     count_score-=1
                 else:
                     print_bird_hit=False
                 if print_bird_hit:
-                    screen.blit(text4,(600,10))
-                screen.blit(text2, (280, 10))
+                    screen.blit(text4,(670,10))
+                screen.blit(text2, (270, 10))
                 screen.blit(text3,(470,10))
                 
             

@@ -305,6 +305,16 @@ def run_menu():
                 rotated_rect = rotated_arrow.get_rect(center=arrow_rect.center)
                 screen.blit(rotated_arrow, rotated_rect.topleft)# affiche la fleche pour l'angle quand la jauge pour la puissance disparait
 
+
+            if player_rect.colliderect(Bird_rect) and Bird_collision>50:
+                Score+=100
+                Bird_collision=0
+                count_score=100
+                #play the bird hit sound
+                bird_hit_sound.play()
+                update_high_score(Score)  # mettre à jour le high score
+
+
             if jauge_activated is False:#affiche la force sur l'écran
                 text1 = font_test.render(f"Strength : {strenght_value}", True, (255, 255, 255))
                 screen.blit(text1, (10, 10))
@@ -312,6 +322,7 @@ def run_menu():
                 text2 = font_test.render(f"Angle : {angle}", True, (255, 255, 255))
                 text3=font_test.render(f"Score : {Score}",True,(255, 255, 255))
                 text4=font_test.render("+100",True,(255, 255, 255))
+                text5=font_test.render("High Score : ",True,(255, 255, 255))
                 if count_score>0:
                     print_bird_hit=True
                     count_score-=1
@@ -319,8 +330,9 @@ def run_menu():
                     print_bird_hit=False
                 if print_bird_hit:
                     screen.blit(text4,(700,10))
-                screen.blit(text2, (290, 10))
-                screen.blit(text3,(490,10))
+                screen.blit(text2, (300, 10))
+                screen.blit(text3,(500,10))
+                screen.blit(text5,(10,50))
                 
             
             if arrow_activated is False and jauge_activated is False and rebound is False:

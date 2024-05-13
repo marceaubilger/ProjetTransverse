@@ -135,9 +135,11 @@ menu = Menu(screen, menu_options, background_image)
 ValeurDefilementGlobale=7
 run = True
 # Function to run the menu
+
 def run_menu():
     global player,run,FramePlayer, is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird
     option = menu.run()
+    strenght_value=0
     try : 
         with open('high_score.pickle', 'rb') as f:
             high_score = pickle.load(f)
@@ -403,4 +405,4 @@ def run_menu():
         pygame.quit()
         sys.exit()
         
-run_menu()
+run_menu() # Run the menu

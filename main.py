@@ -46,6 +46,8 @@ nom_sentier="map/sand_2.png"
 chemin_sentier=os.path.join(script_path,nom_sentier)
 nom_bar="map/buttonLong_brown.png"
 chemin_bar=os.path.join(script_path,nom_bar)
+nom_yeti="YetiFrame/YetiPose1.png"
+chemin_yeti=os.path.join(script_path,nom_yeti)
 
 pygame.font.init()
 font_test = pygame.font.Font(os.path.join(script_path, 'font/Buycat.ttf'), 36)
@@ -71,7 +73,7 @@ resized_ground_rect=resized_ground.get_rect(topleft=(0,HEIGHT-300)) # load le pn
 
 arrow=pygame.image.load(chemin_arrow)
 resized_arrow=pygame.transform.scale(arrow,(200,100))
-arrow_rect = resized_arrow.get_rect(bottomleft=(100, HEIGHT*2/3))
+arrow_rect = resized_arrow.get_rect(bottomleft=(400, HEIGHT*2/3))
 arrow_activated=True
 
 Bird=pygame.image.load(os.path.join('obstacles','Bird','Walk1.png'))
@@ -80,15 +82,22 @@ Bird_rect=Bird.get_rect()
 
 player=pygame.image.load(chemin_player)
 player=pygame.transform.scale(player,(150,100))
-player_rect=player.get_rect(bottomleft=(WIDTH//3,sentier_rect.top+280))
+player_rect=player.get_rect(bottomleft=(WIDTH//4,sentier_rect.top+280))
+
+yeti=pygame.image.load(chemin_yeti)
+yeti=pygame.transform.scale(yeti,(400,500))
+yeti_rect=yeti.get_rect(bottomleft=(5,sentier_rect.top+390))
+yeti_animation_starting=False
+yeti_animation_done=False
+yeti_frame=0
 
 jauge=pygame.image.load(chemin_jauge)
-jauge_rect=jauge.get_rect(bottomleft=(100,HEIGHT))
+jauge_rect=jauge.get_rect(bottomleft=(300,HEIGHT))
 
 
 bar=pygame.image.load(chemin_bar)
 bar=pygame.transform.scale(bar,(50,10))
-bar_rect=bar.get_rect(bottomleft=(180,HEIGHT*1/3))
+bar_rect=bar.get_rect(bottomleft=(450,HEIGHT*1/3))
 jauge_activated=True
 move_bar=15
 
@@ -137,7 +146,7 @@ run = True
 # Function to run the menu
 
 def run_menu():
-    global player,run,FramePlayer, is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird
+    global player,run,FramePlayer,yeti_frame, yeti_animation_starting,yeti,yeti_rect, yeti_animation_done,is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird
     option = menu.run()
     strenght_value=0
     try : 
@@ -275,6 +284,7 @@ def run_menu():
             if keys[pygame.K_RETURN] and arrow_activated==True and jauge_activated==False: # calcule la valuer de l'angle quand la touche entrée est pressé
                 angle_value=angle
                 arrow_activated=False
+                yeti_animation_starting=True
 
             if keys[pygame.K_r]: # reset le jeu
                 if is_in_trajectory is False:
@@ -313,6 +323,30 @@ def run_menu():
                 screen.blit(jauge,jauge_rect)
                 screen.blit(bar,bar_rect)#fait monter et descendre la jauge pour la puissance
 
+            if jauge_activated is False and arrow_activated is False and yeti_animation_done is False:
+                yeti_frame+=2
+                if 5<=yeti_frame<10:
+                    yeti=pygame.transform.scale(pygame.image.load(os.path.join('YetiFrame','YetiPose.png')), (400, 500))
+                if 10<=yeti_frame<15:
+                    yeti=pygame.transform.scale(pygame.image.load(os.path.join('YetiFrame','YetiArriere2.png')), (400, 500))
+                if 15<=yeti_frame<30:
+                    yeti=pygame.transform.scale(pygame.image.load(os.path.join('YetiFrame','YetiArriere3.png')), (400, 500))
+                if 30<=yeti_frame<35:
+                    yeti=pygame.transform.scale(pygame.image.load(os.path.join('YetiFrame','YetiArriere2.png')), (400, 500))
+                if 35<=yeti_frame<40:
+                    yeti=pygame.transform.scale(pygame.image.load(os.path.join('YetiFrame','YetiPose.png')), (400, 500))
+                if 40<=yeti_frame<45:
+                    yeti=pygame.transform.scale(pygame.image.load(os.path.join('YetiFrame','YetiSwing1.png')), (400, 500))
+                if 45<=yeti_frame<50:
+                    yeti=pygame.transform.scale(pygame.image.load(os.path.join('YetiFrame','YetiSwing2.png')), (400, 500))
+                if yeti_frame>50:
+                    yeti_animation_done=True
+
+            if yeti_animation_done is False or yeti_rect.x>-300:
+                screen.blit(yeti,yeti_rect)
+                if yeti_animation_done is True:
+                    yeti_rect.x-=ValeurDefilementGlobale+1
+            
             if (jauge_activated)is False and arrow_activated is True:
                 if angle > 90 or angle < 0:
                     rotation_speed *= -1
@@ -352,7 +386,7 @@ def run_menu():
                     draw_text_with_outline("+100", font_test, (255, 255, 255), screen, 700, 10)
                 
             
-            if arrow_activated is False and jauge_activated is False and rebound is False:
+            if arrow_activated is False and jauge_activated is False and rebound is False and yeti_animation_done is True:
                 is_in_trajectory=True
                 if compute_trajectory:
                     compute_trajectory=False

@@ -80,6 +80,10 @@ Bird=pygame.image.load(os.path.join('obstacles','Bird','Walk1.png'))
 Bird=pygame.transform.scale(Bird,(100,100))
 Bird_rect=Bird.get_rect()
 
+Mushroom=pygame.image.load(os.path.join('obstacles','mushroom.png'))
+Mushroom=pygame.transform.scale(Mushroom,(100,100))
+Mushroom_rect=Mushroom.get_rect()
+
 player=pygame.image.load(chemin_player)
 player=pygame.transform.scale(player,(150,100))
 player_rect=player.get_rect(bottomleft=(WIDTH//4,sentier_rect.top+280))
@@ -127,6 +131,8 @@ scrollsentier=0
 BirdHere=False
 print_bird_hit=False
 Bird_collision=0
+MushroomHere=False
+Mushroom_collision=0
 FramePlayer=0
 
 value_x=0
@@ -146,7 +152,7 @@ run = True
 # Function to run the menu
 
 def run_menu():
-    global player,run,FramePlayer,yeti_frame, yeti_animation_starting,yeti,yeti_rect, yeti_animation_done,is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird
+    global player,run,FramePlayer,yeti_frame, yeti_animation_starting,yeti,yeti_rect, yeti_animation_done,is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird,Mushroom_collision,Mushroom,Mushroom_rect,MushroomHere
     option = menu.run()
     strenght_value=0
     try : 
@@ -173,6 +179,12 @@ def run_menu():
                         BirdI=0
                         Bird_rect.x=2000
                         Bird_rect.y=random.randint(0,400)
+                    if random.randint(0, 300) == 100 and MushroomHere == False:
+                        MushroomHere=True
+                        Mushroom_rect.x=2000
+                        Mushroom_rect.y=random.randint(530,550)
+                        print("c'est bon")
+
                     if 0<=FramePlayer<5:
                         player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0000.png')), (150, 100))
                     if 5<=FramePlayer<10:
@@ -202,8 +214,6 @@ def run_menu():
 
                     elif FramePlayer>65:
                         FramePlayer=0
-                    FramePlayer += 1
-                    #print(FramePlayer)
                     FramePlayer += 1
 
                 for i in range(0,slides+1):
@@ -251,6 +261,18 @@ def run_menu():
                         BirdI=0
                     if Bird_rect.x<-100:
                         BirdHere=False
+
+                if MushroomHere==True:
+                    screen.blit(Mushroom,Mushroom_rect)
+                    Mushroom_rect.x-=ValeurDefilementGlobale*1.3
+                    if Bird_rect.x<-100:
+                        BirdHere=False
+
+                if player_rect.colliderect(Mushroom_rect) and Mushroom_collision>50:
+                    Score+=100
+                    Mushroom_collision=0
+                    count_score=100
+                    #Dennis pitié
 
                 if player_rect.colliderect(Bird_rect) and Bird_collision>50:
                     Score+=100
@@ -429,6 +451,7 @@ def run_menu():
                 player_on_ground = False  # Update the flag
 
             Bird_collision+=1
+            Mushroom_collision+=1
             pygame.display.update()#update le display géneral
     elif option == 1:  # Options
         print("Opening options...")

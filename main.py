@@ -272,9 +272,9 @@ def run_menu():
 
                 # Modify the mushroom collision detection
                 if player_rect.colliderect(Mushroom_rect) and Mushroom_collision > 50:
-                    Score += 100
+                    Score -= 100
                     Mushroom_collision = 0
-                    count_score = 100
+                    count_score = -100
                     power_up = True
                     power_up_start_time = pygame.time.get_ticks()  # Save the start time
 

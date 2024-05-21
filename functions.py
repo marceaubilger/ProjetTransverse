@@ -82,7 +82,7 @@ def draw_text_with_outline(text, font, color, surface, x, y):
     surface.blit(text_surface, (x, y))
 
 
-volume = 0.1
+volume = 0.05
 def options_window(run_menu, background_image, bird_hit_sound, ground_hit_sound):
     global volume
     options_screen = pygame.display.set_mode((WIDTH, HEIGHT))

@@ -154,6 +154,9 @@ run = True
 def run_menu():
     global player,run,FramePlayer,yeti_frame, yeti_animation_starting,yeti,yeti_rect, yeti_animation_done,is_in_trajectory, scrollsky, scrollmountain, scrollground, scrollsentier, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, BirdHere, Bird_collision, count_score, print_bird_hit, Bird_rect, player_rect, arrow_activated, jauge_activated, angle, number_of_rebound, Score, value_x, value_y, slides, ValeurDefilementGlobale, compute_trajectory, rebound, tmp_rebound, move_bar, rotation_speed, Bird,Mushroom_collision,Mushroom,Mushroom_rect,MushroomHere
     option = menu.run()
+    power_up = False
+    power_up_start_time = 0
+    power_up_duration = 1000  # 5 seconds
     strenght_value=0
     try : 
         with open('high_score.pickle', 'rb') as f:
@@ -179,11 +182,10 @@ def run_menu():
                         BirdI=0
                         Bird_rect.x=2000
                         Bird_rect.y=random.randint(0,400)
-                    if random.randint(0, 300) == 100 and MushroomHere == False:
-                        MushroomHere=True
-                        Mushroom_rect.x=2000
-                        Mushroom_rect.y=random.randint(530,550)
-                        print("c'est bon")
+                    if random.randint(0, 100) < 50 and MushroomHere == False:
+                        MushroomHere = True
+                        Mushroom_rect.x = 2000
+                        Mushroom_rect.y = random.randint(530, 550)
 
                     if 0<=FramePlayer<5:
                         player=pygame.transform.scale(pygame.image.load(os.path.join('Player','Frame0000.png')), (150, 100))
@@ -265,14 +267,23 @@ def run_menu():
                 if MushroomHere==True:
                     screen.blit(Mushroom,Mushroom_rect)
                     Mushroom_rect.x-=ValeurDefilementGlobale*1.3
-                    if Bird_rect.x<-100:
-                        BirdHere=False
+                    if Mushroom_rect.x < -100:
+                        MushroomHere = False
 
-                if player_rect.colliderect(Mushroom_rect) and Mushroom_collision>50:
-                    Score+=100
-                    Mushroom_collision=0
-                    count_score=100
-                    #Dennis pitié
+                # Modify the mushroom collision detection
+                if player_rect.colliderect(Mushroom_rect) and Mushroom_collision > 50:
+                    Score += 100
+                    Mushroom_collision = 0
+                    count_score = 100
+                    power_up = True
+                    power_up_start_time = pygame.time.get_ticks()  # Save the start time
+
+                # Implement power-up effects with duration
+                current_time = pygame.time.get_ticks()
+                if power_up and current_time - power_up_start_time < power_up_duration:
+                    ValeurDefilementGlobale -= 1
+                else:
+                    power_up = False    # Dennis pitié
 
                 if player_rect.colliderect(Bird_rect) and Bird_collision>50:
                     Score+=100
